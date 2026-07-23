@@ -1,0 +1,95 @@
+{
+  "tabs": {
+    "home": "หน้าแรก",
+    "watchlist": "รายการติดตาม",
+    "news": "ข่าว",
+    "settings": "ตั้งค่า"
+  },
+  "home": {
+    "title": "StockPulse",
+    "searchPlaceholder": "ค้นหาหุ้นหรือชื่อบริษัท",
+    "gainers": "หุ้นบวกสูงสุด",
+    "losers": "หุ้นลบสูงสุด",
+    "mostActive": "ซื้อขายคึกคักสุด",
+    "browseAll": "ดูหุ้นทั้งหมด",
+    "set": "หุ้นไทย (SET)",
+    "us": "ตลาดสหรัฐฯ",
+    "all": "ทั้งหมด"
+  },
+  "mode": {
+    "investor": "นักลงทุน",
+    "trader": "เทรดเดอร์"
+  },
+  "stock": {
+    "overview": "ภาพรวม",
+    "technical": "เทคนิค",
+    "news": "ข่าว",
+    "aiPlan": "แผนจาก AI",
+    "trend": "แนวโน้ม",
+    "volatility": "ความผันผวน",
+    "volume": "ปริมาณการซื้อขาย",
+    "sentiment": "ความรู้สึกตลาด",
+    "institutionalDemand": "แรงซื้อสถาบัน / กลุ่มทุนใหญ่",
+    "consolidation": "โซนสะสม/แกว่งตัว",
+    "detectedPatterns": "รูปแบบกราฟที่ตรวจพบ",
+    "summary": "สรุป",
+    "detailedAnalysis": "วิเคราะห์เชิงลึก",
+    "holdRecommendation": "คำแนะนำ",
+    "methodologyNote": "คำนวณจากข้อมูลราคา/ปริมาณและข่าวสาธารณะ ไม่ใช่ข้อมูล order-flow ของสถาบันจริง",
+    "priceRelevantTopics": "หัวข้อที่มีผลต่อราคา",
+    "addToWatchlist": "เพิ่มในรายการติดตาม",
+    "removeFromWatchlist": "นำออกจากรายการติดตาม"
+  },
+  "hold": {
+    "buy": "ซื้อ",
+    "hold": "ถือ",
+    "reduce": "ลดสัดส่วน",
+    "watch": "รอดู"
+  },
+  "trendLabel": {
+    "up": "ขาขึ้น",
+    "down": "ขาลง",
+    "sideways": "แกว่งตัว"
+  },
+  "volatilityLabel": {
+    "low": "ต่ำ",
+    "medium": "ปานกลาง",
+    "high": "สูง"
+  },
+  "volumeLabel": {
+    "above_average": "สูงกว่าค่าเฉลี่ย",
+    "below_average": "ต่ำกว่าค่าเฉลี่ย",
+    "spike": "ปริมาณพุ่งผิดปกติ",
+    "normal": "ปกติ"
+  },
+  "flagLabel": {
+    "bullish": "เชิงบวก",
+    "bearish": "เชิงลบ",
+    "neutral": "เป็นกลาง"
+  },
+  "sentimentLabel": {
+    "positive": "เชิงบวก",
+    "neutral": "เป็นกลาง",
+    "negative": "เชิงลบ"
+  },
+  "news": {
+    "title": "ข่าว",
+    "playAudio": "ฟังข่าว",
+    "stopAudio": "หยุด",
+    "topics": "หัวข้อ"
+  },
+  "settings": {
+    "title": "ตั้งค่า",
+    "language": "ภาษาแอพ",
+    "newsLanguage": "ภาษาข่าว/เสียงอ่าน",
+    "tradingMode": "รูปแบบการเทรด",
+    "thai": "ไทย",
+    "english": "อังกฤษ"
+  },
+  "common": {
+    "loading": "กำลังโหลด...",
+    "error": "เกิดข้อผิดพลาด",
+    "retry": "ลองใหม่",
+    "noData": "ไม่มีข้อมูล"
+  }
+}

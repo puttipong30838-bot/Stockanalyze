@@ -1,0 +1,95 @@
+{
+  "tabs": {
+    "home": "Home",
+    "watchlist": "Watchlist",
+    "news": "News",
+    "settings": "Settings"
+  },
+  "home": {
+    "title": "StockPulse",
+    "searchPlaceholder": "Search symbol or company",
+    "gainers": "Top Gainers",
+    "losers": "Top Losers",
+    "mostActive": "Most Active",
+    "browseAll": "Browse All Stocks",
+    "set": "Thai (SET)",
+    "us": "US Market",
+    "all": "All"
+  },
+  "mode": {
+    "investor": "Investor",
+    "trader": "Trader"
+  },
+  "stock": {
+    "overview": "Overview",
+    "technical": "Technical",
+    "news": "News",
+    "aiPlan": "AI Plan",
+    "trend": "Trend",
+    "volatility": "Volatility",
+    "volume": "Volume",
+    "sentiment": "Sentiment",
+    "institutionalDemand": "Institutional Demand / Whale Activity",
+    "consolidation": "Consolidation Zone",
+    "detectedPatterns": "Detected Patterns",
+    "summary": "Summary",
+    "detailedAnalysis": "Detailed Analysis",
+    "holdRecommendation": "Recommendation",
+    "methodologyNote": "Derived from public price/volume and news data — not real institutional order-flow data.",
+    "priceRelevantTopics": "Price-Relevant Topics",
+    "addToWatchlist": "Add to Watchlist",
+    "removeFromWatchlist": "Remove from Watchlist"
+  },
+  "hold": {
+    "buy": "Buy",
+    "hold": "Hold",
+    "reduce": "Reduce",
+    "watch": "Watch"
+  },
+  "trendLabel": {
+    "up": "Uptrend",
+    "down": "Downtrend",
+    "sideways": "Sideways"
+  },
+  "volatilityLabel": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High"
+  },
+  "volumeLabel": {
+    "above_average": "Above Average",
+    "below_average": "Below Average",
+    "spike": "Volume Spike",
+    "normal": "Normal"
+  },
+  "flagLabel": {
+    "bullish": "Bullish",
+    "bearish": "Bearish",
+    "neutral": "Neutral"
+  },
+  "sentimentLabel": {
+    "positive": "Positive",
+    "neutral": "Neutral",
+    "negative": "Negative"
+  },
+  "news": {
+    "title": "News",
+    "playAudio": "Listen",
+    "stopAudio": "Stop",
+    "topics": "Topics"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "App Language",
+    "newsLanguage": "News & Voice Language",
+    "tradingMode": "Trading Style",
+    "thai": "Thai",
+    "english": "English"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "noData": "No data available"
+  }
+}
