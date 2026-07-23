@@ -1,0 +1,18 @@
+{
+  "positive": [
+    "beat", "beats", "upgrade", "upgraded", "growth", "surge", "surges", "rally",
+    "record high", "outperform", "bullish", "profit", "profits", "gain", "gains",
+    "expansion", "strong demand", "buyback", "dividend increase", "raise guidance",
+    "raises forecast", "breakthrough", "partnership", "acquire", "acquisition",
+    "exceeds expectations", "top estimates", "strong earnings", "soar", "soars",
+    "jump", "jumps", "boost", "boosts", "recovery", "optimistic"
+  ],
+  "negative": [
+    "miss", "misses", "downgrade", "downgraded", "decline", "plunge", "plunges",
+    "slump", "record low", "underperform", "bearish", "loss", "losses", "layoff",
+    "layoffs", "lawsuit", "investigation", "recall", "cut guidance", "cuts forecast",
+    "warning", "profit warning", "bankruptcy", "default", "sell-off", "selloff",
+    "tumble", "tumbles", "drop", "drops", "weak demand", "shortage", "delay",
+    "delays", "fraud", "scandal", "pessimistic"
+  ]
+}
