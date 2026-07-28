@@ -10,12 +10,12 @@ export function useSymbols(params: { query?: string; market?: string; limit?: nu
   });
 }
 
-export function useQuotes(symbols: string[]) {
+export function useQuotes(symbols: string[], refetchIntervalMs = 20_000) {
   return useQuery({
     queryKey: ["quotes", symbols],
     queryFn: () => api.quotes(symbols),
     enabled: symbols.length > 0,
-    refetchInterval: 20_000,
+    refetchInterval: refetchIntervalMs,
   });
 }
 
@@ -28,12 +28,13 @@ export function useChart(symbol: string, interval: string, range: string) {
   });
 }
 
-export function useAnalysis(symbol: string, mode: TradingMode) {
+export function useAnalysis(symbol: string, mode: TradingMode, refetchIntervalMs = 60_000) {
   return useQuery({
     queryKey: ["analysis", symbol, mode],
     queryFn: () => api.analysis(symbol, mode),
     enabled: !!symbol,
-    staleTime: 60_000,
+    staleTime: 30_000,
+    refetchInterval: refetchIntervalMs,
   });
 }
 
@@ -50,5 +51,14 @@ export function useMovers(params: { market?: string; type?: string } = {}) {
     queryKey: ["movers", params],
     queryFn: () => api.movers(params),
     refetchInterval: 20_000,
+  });
+}
+
+export function useFx() {
+  return useQuery({
+    queryKey: ["fx"],
+    queryFn: () => api.fx(),
+    staleTime: 5 * 60_000,
+    refetchInterval: 5 * 60_000,
   });
 }

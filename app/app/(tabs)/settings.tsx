@@ -1,4 +1,5 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Text } from "@/components/common/AppText";
 import { useTranslation } from "react-i18next";
 import { colors, spacing } from "@/theme/colors";
 import { SegmentedToggle } from "@/components/common/SegmentedToggle";

@@ -14,7 +14,10 @@
     "browseAll": "ดูหุ้นทั้งหมด",
     "set": "หุ้นไทย (SET)",
     "us": "ตลาดสหรัฐฯ",
-    "all": "ทั้งหมด"
+    "all": "ทั้งหมด",
+    "crypto": "คริปโต",
+    "commodity": "สินค้าโภคภัณฑ์",
+    "fund": "กองทุน"
   },
   "mode": {
     "investor": "นักลงทุน",
@@ -38,12 +41,16 @@
     "methodologyNote": "คำนวณจากข้อมูลราคา/ปริมาณและข่าวสาธารณะ ไม่ใช่ข้อมูล order-flow ของสถาบันจริง",
     "priceRelevantTopics": "หัวข้อที่มีผลต่อราคา",
     "addToWatchlist": "เพิ่มในรายการติดตาม",
-    "removeFromWatchlist": "นำออกจากรายการติดตาม"
+    "removeFromWatchlist": "นำออกจากรายการติดตาม",
+    "dayRange": "ช่วงราคาวันนี้",
+    "fiftyTwoWeekRange": "ช่วงราคา 52 สัปดาห์"
   },
   "hold": {
+    "strong_buy": "ซื้อแรง",
     "buy": "ซื้อ",
     "hold": "ถือ",
     "reduce": "ลดสัดส่วน",
+    "strong_sell": "ขายแรง",
     "watch": "รอดู"
   },
   "trendLabel": {
@@ -76,7 +83,8 @@
     "title": "ข่าว",
     "playAudio": "ฟังข่าว",
     "stopAudio": "หยุด",
-    "topics": "หัวข้อ"
+    "topics": "หัวข้อ",
+    "allTopics": "ทั้งหมด"
   },
   "settings": {
     "title": "ตั้งค่า",

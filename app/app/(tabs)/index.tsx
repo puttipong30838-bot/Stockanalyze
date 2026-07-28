@@ -3,14 +3,15 @@ import {
   ActivityIndicator,
   FlatList,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from "react-native";
+import { Text } from "@/components/common/AppText";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { colors, spacing } from "@/theme/colors";
 import { SegmentedToggle } from "@/components/common/SegmentedToggle";
+import { CategoryChips } from "@/components/common/CategoryChips";
 import { StockRow } from "@/components/common/StockRow";
 import { useMovers, useSymbols } from "@/api/hooks";
 import type { Market } from "@/types/api";
@@ -47,17 +48,18 @@ export default function HomeScreen() {
           placeholderTextColor={colors.textMuted}
           style={styles.search}
         />
-        <View style={styles.filterRow}>
-          <SegmentedToggle
-            value={market}
-            onChange={setMarket}
-            options={[
-              { value: "ALL", label: t("home.all") },
-              { value: "SET", label: t("home.set") },
-              { value: "US", label: t("home.us") },
-            ]}
-          />
-        </View>
+        <CategoryChips
+          value={market}
+          onChange={setMarket}
+          options={[
+            { value: "ALL", label: t("home.all") },
+            { value: "SET", label: t("home.set") },
+            { value: "US", label: t("home.us") },
+            { value: "CRYPTO", label: t("home.crypto") },
+            { value: "COMMODITY", label: t("home.commodity") },
+            { value: "FUND", label: t("home.fund") },
+          ]}
+        />
         {!showingSearch && (
           <View style={styles.filterRow}>
             <SegmentedToggle
@@ -92,6 +94,8 @@ export default function HomeScreen() {
                   dayLow: null,
                   prevClose: null,
                   volume: null,
+                  fiftyTwoWeekLow: null,
+                  fiftyTwoWeekHigh: null,
                 }}
                 name={item.name}
                 onPress={() => router.push(`/stock/${encodeURIComponent(item.symbol)}`)}

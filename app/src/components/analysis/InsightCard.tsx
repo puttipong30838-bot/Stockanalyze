@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Text } from "@/components/common/AppText";
 import { colors, radius, spacing } from "@/theme/colors";
 
 export function InsightCard({

@@ -3,6 +3,7 @@ import type {
   AnalysisBundle,
   ApiEnvelope,
   ChartResponse,
+  FxRate,
   NewsArticle,
   Quote,
   SymbolInfo,
@@ -52,4 +53,6 @@ export const api = {
     if (params.type) qs.set("type", params.type);
     return getJson<Quote[]>(`/api/v1/movers?${qs.toString()}`);
   },
+
+  fx: () => getJson<FxRate>("/api/v1/fx"),
 };

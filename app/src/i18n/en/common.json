@@ -14,7 +14,10 @@
     "browseAll": "Browse All Stocks",
     "set": "Thai (SET)",
     "us": "US Market",
-    "all": "All"
+    "all": "All",
+    "crypto": "Crypto",
+    "commodity": "Commodities",
+    "fund": "Funds"
   },
   "mode": {
     "investor": "Investor",
@@ -38,12 +41,16 @@
     "methodologyNote": "Derived from public price/volume and news data — not real institutional order-flow data.",
     "priceRelevantTopics": "Price-Relevant Topics",
     "addToWatchlist": "Add to Watchlist",
-    "removeFromWatchlist": "Remove from Watchlist"
+    "removeFromWatchlist": "Remove from Watchlist",
+    "dayRange": "Day Range",
+    "fiftyTwoWeekRange": "52-Week Range"
   },
   "hold": {
+    "strong_buy": "Strong Buy",
     "buy": "Buy",
     "hold": "Hold",
     "reduce": "Reduce",
+    "strong_sell": "Strong Sell",
     "watch": "Watch"
   },
   "trendLabel": {
@@ -76,7 +83,8 @@
     "title": "News",
     "playAudio": "Listen",
     "stopAudio": "Stop",
-    "topics": "Topics"
+    "topics": "Topics",
+    "allTopics": "All"
   },
   "settings": {
     "title": "Settings",

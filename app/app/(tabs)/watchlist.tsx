@@ -1,4 +1,5 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import { Text } from "@/components/common/AppText";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { colors, spacing } from "@/theme/colors";

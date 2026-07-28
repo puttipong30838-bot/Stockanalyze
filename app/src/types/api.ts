@@ -1,4 +1,4 @@
-export type Market = "SET" | "US";
+export type Market = "SET" | "US" | "CRYPTO" | "COMMODITY" | "FUND";
 
 export interface SymbolInfo {
   symbol: string;
@@ -28,6 +28,8 @@ export interface Quote {
   volume: number | null;
   currency?: string;
   marketState?: string;
+  fiftyTwoWeekLow: number | null;
+  fiftyTwoWeekHigh: number | null;
 }
 
 export interface OverlaySeries {
@@ -50,7 +52,7 @@ export type TrendDirection = "up" | "down" | "sideways";
 export type VolatilityLevel = "low" | "medium" | "high";
 export type FlagLabel = "bullish" | "bearish" | "neutral";
 export type SentimentLabel = "positive" | "neutral" | "negative";
-export type HoldLabel = "buy" | "hold" | "reduce" | "watch";
+export type HoldLabel = "strong_buy" | "buy" | "hold" | "reduce" | "strong_sell" | "watch";
 export type TradingMode = "investor" | "trader";
 
 export interface ConsolidationZone {
@@ -93,6 +95,11 @@ export interface NewsArticle {
   sentiment: { score: number; label: SentimentLabel };
   topics: string[];
   lang: "th" | "en";
+  description?: string;
+}
+
+export interface FxRate {
+  usdThb: number | null;
 }
 
 export interface ApiEnvelope<T> {

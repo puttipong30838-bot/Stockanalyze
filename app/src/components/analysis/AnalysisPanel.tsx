@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Text } from "@/components/common/AppText";
 import { useTranslation } from "react-i18next";
 import { colors, flagColor, spacing } from "@/theme/colors";
 import type { AnalysisBundle } from "@/types/api";
@@ -12,7 +13,9 @@ function trendColor(direction: AnalysisBundle["trend"]["direction"]) {
 }
 
 function holdColor(label: AnalysisBundle["holdRecommendation"]["label"]) {
+  if (label === "strong_buy") return colors.bullishStrong;
   if (label === "buy") return colors.bullish;
+  if (label === "strong_sell") return colors.bearishStrong;
   if (label === "reduce") return colors.bearish;
   return colors.neutral;
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import { Text } from "@/components/common/AppText";
 import { useTranslation } from "react-i18next";
 import { colors, flagColor, radius, spacing } from "@/theme/colors";
 import type { NewsArticle } from "@/types/api";
@@ -21,7 +22,8 @@ export function NewsListItem({ article }: { article: NewsArticle }) {
     }
     setSpeaking(true);
     try {
-      await speakText(article.title, article.lang);
+      const text = article.description ? `${article.title}. ${article.description}` : article.title;
+      await speakText(text, article.lang);
     } finally {
       setSpeaking(false);
     }
@@ -38,6 +40,11 @@ export function NewsListItem({ article }: { article: NewsArticle }) {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{article.title}</Text>
+      {article.description && (
+        <Text style={styles.description} numberOfLines={3}>
+          {article.description}
+        </Text>
+      )}
       <View style={styles.metaRow}>
         <Text style={styles.source}>{article.source}</Text>
         <View style={[styles.sentimentDot, { backgroundColor: sentimentColor }]} />
@@ -78,6 +85,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     lineHeight: 20,
+  },
+  description: {
+    color: colors.textSecondary,
+    fontSize: 12.5,
+    lineHeight: 18,
   },
   metaRow: {
     flexDirection: "row",
