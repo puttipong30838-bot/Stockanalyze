@@ -21,10 +21,17 @@ function hashId(input: string): string {
   return Math.abs(hash).toString(36);
 }
 
+function cleanSnippet(raw: string | undefined, title: string): string | undefined {
+  if (!raw) return undefined;
+  const stripped = raw.replace(/<[^>]*>/g, "").trim();
+  if (!stripped || stripped === title) return undefined;
+  return stripped.length > 220 ? `${stripped.slice(0, 217)}...` : stripped;
+}
+
 export async function fetchNews(
   query: string,
   lang: NewsLang,
-  limit = 20
+  limit = 30
 ): Promise<NewsArticle[]> {
   const feed = await parser.parseURL(googleNewsUrl(query, lang));
   const items = (feed.items ?? []).slice(0, limit);
@@ -42,6 +49,7 @@ export async function fetchNews(
       sentiment,
       topics,
       lang,
+      description: cleanSnippet(item.contentSnippet ?? item.content, title),
     };
   });
 }

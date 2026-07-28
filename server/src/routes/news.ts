@@ -21,7 +21,7 @@ export async function newsRoutes(app: FastifyInstance) {
         : "stock market";
 
     const resolvedLang: NewsLang = lang === "th" ? "th" : "en";
-    const max = limit ? parseInt(limit, 10) : 20;
+    const max = limit ? parseInt(limit, 10) : 30;
 
     try {
       const articles = await cached(

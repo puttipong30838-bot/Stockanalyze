@@ -1,4 +1,4 @@
-export type Market = "SET" | "US";
+export type Market = "SET" | "US" | "CRYPTO" | "COMMODITY" | "FUND";
 
 export interface SymbolInfo {
   symbol: string;
@@ -28,6 +28,8 @@ export interface Quote {
   volume: number | null;
   currency?: string;
   marketState?: string;
+  fiftyTwoWeekLow: number | null;
+  fiftyTwoWeekHigh: number | null;
 }
 
 export type TrendDirection = "up" | "down" | "sideways";
@@ -86,7 +88,7 @@ export interface SentimentResult {
 
 export type TradingMode = "investor" | "trader";
 
-export type HoldLabel = "buy" | "hold" | "reduce" | "watch";
+export type HoldLabel = "strong_buy" | "buy" | "hold" | "reduce" | "strong_sell" | "watch";
 
 export interface AiPlanResult {
   text: string;
@@ -126,4 +128,5 @@ export interface NewsArticle {
   sentiment: SentimentResult;
   topics: string[];
   lang: NewsLang;
+  description?: string;
 }

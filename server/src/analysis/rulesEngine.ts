@@ -39,7 +39,9 @@ export function computeHoldRecommendation(s: Signals): HoldRecommendation {
   const score = bullishScore(s);
 
   let label: HoldRecommendation["label"] = "hold";
-  if (score >= 2) label = "buy";
+  if (score >= 3.5) label = "strong_buy";
+  else if (score >= 2) label = "buy";
+  else if (score <= -3.5) label = "strong_sell";
   else if (score <= -2) label = "reduce";
   else if (s.consolidation.flag === "neutral" && Math.abs(score) < 1) label = "watch";
 
@@ -69,8 +71,12 @@ export function generateAiPlan(
 
   let text: string;
   if (isInvestor) {
-    if (hold.label === "buy") {
+    if (hold.label === "strong_buy") {
+      text = `${s.symbol} shows a strongly aligned ${trendWord} with supportive volume, institutional-demand signal, and sentiment all pointing the same direction. For a long-term position, this is a higher-conviction accumulation window, though still size for volatility (${s.volatility.level}) and reassess if any of these signals reverses.`;
+    } else if (hold.label === "buy") {
       text = `${s.symbol} is in a ${trendWord} with supportive volume and sentiment. For a long-term position, consider accumulating on dips and holding through short-term volatility (${s.volatility.level}), reviewing again if the trend or institutional-demand signal reverses.`;
+    } else if (hold.label === "strong_sell") {
+      text = `${s.symbol} shows a strongly negative ${trendWord} with weak volume, sentiment, and institutional-demand signals aligned to the downside. For a long-term holder, this is a higher-conviction signal to reduce exposure meaningfully rather than just trim.`;
     } else if (hold.label === "reduce") {
       text = `${s.symbol} is showing a ${trendWord} with weakening signals. For a long-term holder, consider trimming exposure or waiting for trend stabilization before adding.`;
     } else if (hold.label === "watch") {
@@ -79,8 +85,12 @@ export function generateAiPlan(
       text = `${s.symbol} shows a mixed picture. A balanced long-term approach is to hold existing positions and wait for clearer trend or volume confirmation before changing allocation.`;
     }
   } else {
-    if (hold.label === "buy") {
+    if (hold.label === "strong_buy") {
+      text = `${s.symbol} shows a high-conviction ${trendWord} setup — trend, volume, and institutional-demand signals all align bullish. A short-term trade could size up slightly versus a normal entry, still with a stop below the last consolidation low. Volatility is ${s.volatility.level}.`;
+    } else if (hold.label === "buy") {
       text = `${s.symbol} shows a ${trendWord} with above-average volume. A short-term trade could look for entries near recent support, with a stop below the last consolidation low and a target near recent resistance. Volatility is ${s.volatility.level}, size the position accordingly.`;
+    } else if (hold.label === "strong_sell") {
+      text = `${s.symbol} shows a high-conviction bearish ${trendWord} — trend, volume, and institutional-demand signals all align to the downside. Traders holding long positions should consider a more decisive exit rather than a partial trim; short setups carry stronger confirmation here. Volatility is ${s.volatility.level}.`;
     } else if (hold.label === "reduce") {
       text = `${s.symbol} is showing weakening momentum in a ${trendWord}. Traders holding long positions may consider tightening stops or taking partial profits; volatility is ${s.volatility.level}.`;
     } else if (hold.label === "watch") {
@@ -94,7 +104,7 @@ export function generateAiPlan(
 }
 
 export function generateSummary(s: Signals, hold: HoldRecommendation): string {
-  return `${s.symbol}: ${s.trend.direction} trend, ${s.volatility.level} volatility, ${s.volume.callout.replace("_", " ")} volume, ${s.sentiment.label} news sentiment. Recommendation: ${hold.label.toUpperCase()}.`;
+  return `${s.symbol}: ${s.trend.direction} trend, ${s.volatility.level} volatility, ${s.volume.callout.replace("_", " ")} volume, ${s.sentiment.label} news sentiment. Recommendation: ${hold.label.replace("_", " ").toUpperCase()}.`;
 }
 
 export function generateDetailedAnalysis(s: Signals, hold: HoldRecommendation): string {
@@ -117,6 +127,6 @@ export function generateDetailedAnalysis(s: Signals, hold: HoldRecommendation): 
     );
   }
   lines.push(`News Sentiment: ${s.sentiment.label} (score ${s.sentiment.score}) from recent headlines.`);
-  lines.push(`Overall recommendation: ${hold.label.toUpperCase()} — ${hold.rationale}`);
+  lines.push(`Overall recommendation: ${hold.label.replace("_", " ").toUpperCase()} — ${hold.rationale}`);
   return lines.join(" ");
 }

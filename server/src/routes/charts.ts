@@ -8,7 +8,7 @@ import {
 import { bollingerBands, closes, ema, sma } from "../analysis/indicators.js";
 
 const VALID_INTERVALS: ChartInterval[] = ["1m", "5m", "15m", "1h", "1d", "1wk"];
-const VALID_RANGES: ChartRange[] = ["1d", "5d", "1mo", "6mo", "1y", "5y"];
+const VALID_RANGES: ChartRange[] = ["1d", "5d", "1mo", "6mo", "ytd", "1y", "5y"];
 
 export async function chartsRoutes(app: FastifyInstance) {
   app.get("/api/v1/charts/:symbol", async (request, reply) => {

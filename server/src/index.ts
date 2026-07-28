@@ -6,6 +6,7 @@ import { chartsRoutes } from "./routes/charts.js";
 import { analysisRoutes } from "./routes/analysis.js";
 import { newsRoutes } from "./routes/news.js";
 import { moversRoutes } from "./routes/movers.js";
+import { fxRoutes } from "./routes/fx.js";
 
 export function buildServer() {
   const app = Fastify({ logger: true });
@@ -20,6 +21,7 @@ export function buildServer() {
   app.register(analysisRoutes);
   app.register(newsRoutes);
   app.register(moversRoutes);
+  app.register(fxRoutes);
 
   return app;
 }

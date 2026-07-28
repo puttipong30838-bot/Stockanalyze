@@ -4,7 +4,7 @@ import type { Candle, Quote } from "../types/index.js";
 const yahooFinance = new YahooFinance();
 
 export type ChartInterval = "1m" | "5m" | "15m" | "1h" | "1d" | "1wk";
-export type ChartRange = "1d" | "5d" | "1mo" | "6mo" | "1y" | "5y";
+export type ChartRange = "1d" | "5d" | "1mo" | "6mo" | "ytd" | "1y" | "5y";
 
 const INTERVAL_MAP: Record<ChartInterval, string> = {
   "1m": "1m",
@@ -15,7 +15,7 @@ const INTERVAL_MAP: Record<ChartInterval, string> = {
   "1wk": "1wk",
 };
 
-function rangeToDates(range: ChartRange): { period1: Date; period2: Date } {
+export function rangeToDates(range: ChartRange): { period1: Date; period2: Date } {
   const period2 = new Date();
   const period1 = new Date(period2);
   switch (range) {
@@ -30,6 +30,10 @@ function rangeToDates(range: ChartRange): { period1: Date; period2: Date } {
       break;
     case "6mo":
       period1.setMonth(period1.getMonth() - 6);
+      break;
+    case "ytd":
+      period1.setMonth(0, 1);
+      period1.setHours(0, 0, 0, 0);
       break;
     case "1y":
       period1.setFullYear(period1.getFullYear() - 1);
@@ -92,7 +96,15 @@ export async function fetchQuotes(symbols: string[]): Promise<Quote[]> {
     volume: r.regularMarketVolume ?? null,
     currency: r.currency,
     marketState: r.marketState,
+    fiftyTwoWeekLow: r.fiftyTwoWeekLow ?? null,
+    fiftyTwoWeekHigh: r.fiftyTwoWeekHigh ?? null,
   }));
+}
+
+export async function fetchExchangeRate(pair: string): Promise<number | null> {
+  const quote = await yahooFinance.quote(pair);
+  const arr = Array.isArray(quote) ? quote : [quote];
+  return arr[0]?.regularMarketPrice ?? null;
 }
 
 export async function searchSymbols(query: string) {
