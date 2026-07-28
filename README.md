@@ -1,18 +1,22 @@
 # StockPulse
 
-Mobile stock analysis app (SET + US markets) with charts, heuristic technical/news
-analysis, and bilingual (Thai/English) text-to-speech news reading. Green-on-black
-theme. Built with a free/keyless data stack — no paid API keys required.
+Mobile stock analysis app (SET, US, crypto, commodities, US mutual funds) with
+charts, heuristic technical/news analysis, and bilingual (Thai/English) text-to-speech
+news reading. Green-on-black theme, Inter/Noto Sans Thai typography. Built with a
+free/keyless data stack — no paid API keys required.
 
 ## Structure
 
 - `server/` — Fastify + TypeScript API. Fetches quotes/charts from Yahoo Finance
   (unofficial, free) and news from Google News RSS, computes all technical
   indicators and heuristic analysis (trend, volatility, volume, institutional-demand
-  proxy, consolidation zones, pattern detection, sentiment, AI plan/hold/summary).
-- `app/` — Expo (React Native) app. Browse stocks, view candlestick charts
-  (TradingView `lightweight-charts`), full analysis panel, news with TTS, watchlist,
-  Investor/Trader mode toggle, Thai/English UI.
+  proxy, consolidation zones, pattern detection, sentiment, AI plan/hold/summary
+  including Strong Buy/Strong Sell tiers), plus a live USD/THB FX rate.
+- `app/` — Expo (React Native) app. Browse stocks/crypto/commodities/funds via
+  category chips, view candlestick charts (TradingView `lightweight-charts`) with a
+  1D/5D/1M/6M/YTD/1Y/5Y range selector, day-range and 52-week-range bars, a full
+  analysis panel, news with topic filters and TTS, watchlist, Investor/Trader mode
+  toggle, Thai/English UI.
 
 ## Running it
 
@@ -50,5 +54,11 @@ APK, run `npx eas build -p android` (requires a free Expo/EAS account).
 - Yahoo Finance's endpoints are free but unofficial and can change without
   notice; all access is isolated behind `server/src/providers/yahoo.ts` so a
   future fix is a single-file change.
-- The symbol list is a curated seed list (`server/src/data/symbols.seed.json`),
-  not a full live exchange listing — there's no free endpoint for that.
+- The symbol list is a curated seed list (`server/src/data/symbols.seed.json`,
+  ~290 instruments across SET/US/crypto/commodities/funds), not a full live
+  exchange listing — there's no free endpoint for that.
+- "Gold" is the international spot price (USD/oz, via Yahoo `GC=F`) with a
+  THB-per-oz line converted at the live FX rate — this is an estimate, not the
+  official Thai Gold Traders Association baht-weight price (no free source
+  exists for that). "Mutual Fund" covers US funds only (Yahoo has no free
+  Thai กองทุนรวม NAV data).
