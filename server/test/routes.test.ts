@@ -23,6 +23,12 @@ vi.mock("../src/providers/yahoo.js", () => ({
   searchSymbols: vi.fn(async () => []),
 }));
 
+vi.mock("../src/providers/nasdaq.js", () => ({
+  fetchNasdaqSymbols: vi.fn(async () => [
+    { symbol: "ZZZZ", name: "Zzzz Test Corp", market: "US" as const },
+  ]),
+}));
+
 vi.mock("../src/providers/news.js", () => ({
   fetchNews: vi.fn(async (_query: string, lang: "th" | "en") => [
     {
