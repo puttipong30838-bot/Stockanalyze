@@ -20,7 +20,7 @@ export default function WatchlistScreen() {
           <Text style={styles.empty}>{t("common.noData")}</Text>
         </View>
       ) : quotesQuery.isLoading ? (
-        <ActivityIndicator color={colors.bullish} style={styles.loader} />
+        <ActivityIndicator color={colors.accent} style={styles.loader} />
       ) : (
         <FlatList
           data={quotesQuery.data ?? []}

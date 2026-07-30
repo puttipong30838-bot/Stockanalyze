@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
   },
   pillActive: {
-    backgroundColor: colors.bullishMuted,
+    backgroundColor: colors.accentMuted,
   },
   label: {
     color: colors.textMuted,
@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   labelActive: {
-    color: colors.bullish,
+    color: colors.accent,
   },
 });

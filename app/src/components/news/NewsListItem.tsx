@@ -5,10 +5,12 @@ import { useTranslation } from "react-i18next";
 import { colors, flagColor, radius, spacing } from "@/theme/colors";
 import type { NewsArticle } from "@/types/api";
 import { checkVoiceAvailability, speakText, stopSpeaking } from "@/tts/speak";
+import { useSettingsStore } from "@/store/settingsStore";
 
 export function NewsListItem({ article }: { article: NewsArticle }) {
   const { t } = useTranslation();
   const [speaking, setSpeaking] = useState(false);
+  const ttsVoice = useSettingsStore((s) => s.ttsVoice);
 
   async function handleToggleAudio() {
     if (speaking) {
@@ -23,7 +25,7 @@ export function NewsListItem({ article }: { article: NewsArticle }) {
     setSpeaking(true);
     try {
       const text = article.description ? `${article.title}. ${article.description}` : article.title;
-      await speakText(text, article.lang);
+      await speakText(text, article.lang, ttsVoice[article.lang]);
     } finally {
       setSpeaking(false);
     }
@@ -130,10 +132,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
     borderRadius: radius.pill,
-    backgroundColor: colors.bullishMuted,
+    backgroundColor: colors.accentMuted,
   },
   playText: {
-    color: colors.bullish,
+    color: colors.accent,
     fontSize: 12,
     fontWeight: "700",
   },

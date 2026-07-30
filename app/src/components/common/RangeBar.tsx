@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   fill: {
     height: 4,
     borderRadius: 2,
-    backgroundColor: colors.bullish,
+    backgroundColor: colors.accent,
     opacity: 0.35,
   },
   marker: {
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 5,
     marginLeft: -5,
-    backgroundColor: colors.bullish,
+    backgroundColor: colors.accent,
     borderWidth: 2,
     borderColor: colors.background,
   },

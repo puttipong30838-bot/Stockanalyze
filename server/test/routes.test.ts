@@ -6,7 +6,7 @@ vi.mock("../src/providers/yahoo.js", () => ({
     makeTrendingCandles(60, 100, 1, { volatility: 0.1 })
   ),
   fetchQuotes: vi.fn(async (symbols: string[]) =>
-    symbols.map((symbol) => ({
+    symbols.map((symbol, i) => ({
       symbol,
       shortName: `${symbol} Inc.`,
       price: 123.45,
@@ -18,6 +18,9 @@ vi.mock("../src/providers/yahoo.js", () => ({
       volume: 1_000_000,
       currency: "USD",
       marketState: "REGULAR",
+      fiftyTwoWeekLow: 90,
+      fiftyTwoWeekHigh: 150,
+      marketCap: (i + 1) * 1_000_000,
     }))
   ),
   searchSymbols: vi.fn(async () => []),
@@ -159,6 +162,17 @@ describe("GET /api/v1/movers", () => {
     expect(res.statusCode).toBe(200);
     const body = res.json();
     expect(Array.isArray(body.data)).toBe(true);
+    await app.close();
+  });
+
+  it("defaults to sorting by market cap descending", async () => {
+    const app = buildServer();
+    const res = await app.inject({ method: "GET", url: "/api/v1/movers?market=US" });
+    expect(res.statusCode).toBe(200);
+    const body = res.json();
+    const caps = body.data.map((q: { marketCap: number }) => q.marketCap);
+    const sorted = [...caps].sort((a, b) => b - a);
+    expect(caps).toEqual(sorted);
     await app.close();
   });
 });

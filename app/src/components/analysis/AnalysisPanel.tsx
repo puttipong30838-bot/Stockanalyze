@@ -112,15 +112,15 @@ export function AnalysisPanel({ analysis }: { analysis: AnalysisBundle }) {
 
       {analysis.detectedPatterns.length > 0 && (
         <InsightCard title={t("stock.detectedPatterns")}>
-          <View style={styles.chipRow}>
-            {analysis.detectedPatterns.map((p, idx) => (
+          {analysis.detectedPatterns.map((p, idx) => (
+            <View key={`${p.name}-${idx}`} style={styles.patternBlock}>
               <Badge
-                key={`${p.name}-${idx}`}
                 label={`${p.name.replace(/_/g, " ")} (${Math.round(p.confidence * 100)}%)`}
                 color={colors.textSecondary}
               />
-            ))}
-          </View>
+              <Text style={styles.caption}>{t(`patternExplain.${p.name}`)}</Text>
+            </View>
+          ))}
         </InsightCard>
       )}
 
@@ -154,9 +154,8 @@ const styles = StyleSheet.create({
   rowItem: {
     flex: 1,
   },
-  chipRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+  patternBlock: {
     gap: spacing.xs,
+    marginBottom: spacing.sm,
   },
 });

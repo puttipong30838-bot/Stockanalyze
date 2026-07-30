@@ -8,6 +8,7 @@
   "home": {
     "title": "StockPulse",
     "searchPlaceholder": "Search symbol or company",
+    "topMarketCap": "Top Market Cap",
     "gainers": "Top Gainers",
     "losers": "Top Losers",
     "mostActive": "Most Active",
@@ -43,7 +44,19 @@
     "addToWatchlist": "Add to Watchlist",
     "removeFromWatchlist": "Remove from Watchlist",
     "dayRange": "Day Range",
-    "fiftyTwoWeekRange": "52-Week Range"
+    "fiftyTwoWeekRange": "52-Week Range",
+    "flair": {
+      "investor": {
+        "accumulate": "Near its 52-week low — a zone some long-term investors watch for accumulation.",
+        "distribute": "Near its 52-week high — some investors watch for profit-taking here.",
+        "mid": "Trading in the middle of its 52-week range."
+      },
+      "trader": {
+        "rangeLow": "Near today's session low — watch for a bounce or a breakdown.",
+        "rangeHigh": "Near today's session high — watch for a breakout or a rejection.",
+        "rangeMid": "Trading mid-range for today's session so far."
+      }
+    }
   },
   "hold": {
     "strong_buy": "Strong Buy",
@@ -79,12 +92,32 @@
     "neutral": "Neutral",
     "negative": "Negative"
   },
+  "patternExplain": {
+    "double_top": "Price rallied to two similar peaks with a pullback between them — often a bearish reversal signal after an uptrend.",
+    "double_bottom": "Price fell to two similar lows with a bounce between them — often a bullish reversal signal after a downtrend.",
+    "head_and_shoulders": "Three peaks with the middle one highest — a classic bearish reversal pattern, especially after a strong uptrend.",
+    "inverse_head_and_shoulders": "Three troughs with the middle one lowest — a classic bullish reversal pattern, especially after a strong downtrend.",
+    "symmetrical_triangle": "The price range is squeezing tighter as highs fall and lows rise — usually resolves with a breakout in either direction; watch volume for the direction.",
+    "descending_wedge": "Price is falling but the drops are getting smaller — often resolves with an upward breakout.",
+    "ascending_wedge": "Price is rising but the gains are getting smaller — often resolves with a downward breakout."
+  },
   "news": {
     "title": "News",
     "playAudio": "Listen",
     "stopAudio": "Stop",
     "topics": "Topics",
-    "allTopics": "All"
+    "allTopics": "All",
+    "category": {
+      "earnings": "Earnings",
+      "mergers_acquisitions": "Mergers & Acquisitions",
+      "dividend": "Dividends",
+      "interest_rates": "Interest Rates",
+      "regulation": "Regulation",
+      "oil_energy": "Oil & Energy",
+      "leadership": "Leadership",
+      "legal": "Legal",
+      "general": "General"
+    }
   },
   "settings": {
     "title": "Settings",
@@ -92,7 +125,17 @@
     "newsLanguage": "News & Voice Language",
     "tradingMode": "Trading Style",
     "thai": "Thai",
-    "english": "English"
+    "english": "English",
+    "displayCurrency": "Preferred Display Currency",
+    "ttsVoiceThai": "Thai Reading Voice",
+    "ttsVoiceEnglish": "English Reading Voice",
+    "voiceAuto": "Automatic (best available)",
+    "voiceUnavailableWeb": "Voice selection is only available on the mobile app.",
+    "dataAndStorage": "Data & Storage",
+    "clearCache": "Clear Cached Data",
+    "cacheCleared": "Cache cleared",
+    "about": "About",
+    "aboutNote": "Prices and analysis are derived from free public data sources and are not financial advice."
   },
   "common": {
     "loading": "Loading...",

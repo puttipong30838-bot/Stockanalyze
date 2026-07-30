@@ -32,6 +32,7 @@ export default function StockDetailScreen() {
   const newsLanguage = useSettingsStore((s) => s.newsLanguage);
   const watchlist = useSettingsStore((s) => s.watchlist);
   const toggleWatchlist = useSettingsStore((s) => s.toggleWatchlist);
+  const displayCurrency = useSettingsStore((s) => s.displayCurrency);
   const inWatchlist = watchlist.includes(symbol);
 
   const [rangeKey, setRangeKey] = useState<RangeKey>(mode === "trader" ? "1D" : "6M");
@@ -46,17 +47,46 @@ export default function StockDetailScreen() {
   const quote = quoteQuery.data?.[0];
   const isUp = (quote?.changePercent ?? 0) >= 0;
   const usdThb = fxQuery.data?.usdThb;
+  const nativeCurrency = quote?.currency ?? "";
 
-  const secondaryPrice = useMemo(() => {
+  const convertedPrice = useMemo(() => {
     if (!quote?.price || !usdThb) return null;
-    if (quote.currency === "THB") {
-      return formatMoney(quote.price / usdThb, "USD");
-    }
-    if (quote.currency === "USD") {
-      return formatMoney(quote.price * usdThb, "THB");
-    }
+    if (nativeCurrency === "THB") return { value: quote.price / usdThb, currency: "USD" };
+    if (nativeCurrency === "USD") return { value: quote.price * usdThb, currency: "THB" };
     return null;
-  }, [quote, usdThb]);
+  }, [quote, usdThb, nativeCurrency]);
+
+  // Show the user's preferred currency as the large primary price when we
+  // have a conversion for it; otherwise fall back to the stock's own currency.
+  const showConvertedAsPrimary = convertedPrice?.currency === displayCurrency;
+  const primaryPrice = showConvertedAsPrimary ? convertedPrice.value : quote?.price ?? null;
+  const primaryCurrency = showConvertedAsPrimary ? displayCurrency : nativeCurrency;
+  const secondaryPriceValue = showConvertedAsPrimary ? quote?.price ?? null : convertedPrice?.value ?? null;
+  const secondaryPriceCurrency = showConvertedAsPrimary ? nativeCurrency : convertedPrice?.currency;
+  const secondaryPrice =
+    secondaryPriceValue != null && secondaryPriceCurrency
+      ? formatMoney(secondaryPriceValue, secondaryPriceCurrency)
+      : null;
+
+  // Mode-specific framing: investors care where price sits in its 52-week
+  // range, traders care where it sits within today's session range.
+  const flairKey = useMemo(() => {
+    if (!quote?.price) return null;
+    if (mode === "investor") {
+      const { fiftyTwoWeekLow: low, fiftyTwoWeekHigh: high, price } = quote;
+      if (low == null || high == null || high === low) return "mid";
+      const pct = (price - low) / (high - low);
+      if (pct <= 0.3) return "accumulate";
+      if (pct >= 0.85) return "distribute";
+      return "mid";
+    }
+    const { dayLow: low, dayHigh: high, price } = quote;
+    if (low == null || high == null || high === low) return "rangeMid";
+    const pct = (price - low) / (high - low);
+    if (pct <= 0.25) return "rangeLow";
+    if (pct >= 0.75) return "rangeHigh";
+    return "rangeMid";
+  }, [mode, quote]);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -69,7 +99,7 @@ export default function StockDetailScreen() {
             <>
               <View style={styles.priceRow}>
                 <Text style={styles.price}>
-                  {quote.price != null ? formatMoney(quote.price, quote.currency ?? "") : "-"}
+                  {primaryPrice != null ? formatMoney(primaryPrice, primaryCurrency) : "-"}
                 </Text>
                 <Text style={[styles.change, { color: isUp ? colors.bullish : colors.bearish }]}>
                   {isUp ? "+" : ""}
@@ -86,6 +116,13 @@ export default function StockDetailScreen() {
           </Text>
         </Pressable>
       </View>
+
+      {flairKey && (
+        <View style={styles.flairChip}>
+          <Text style={styles.flairLabel}>{t(`mode.${mode}`)}</Text>
+          <Text style={styles.flairText}>{t(`stock.flair.${mode}.${flairKey}`)}</Text>
+        </View>
+      )}
 
       {quote && (
         <View style={styles.rangesBlock}>
@@ -109,7 +146,7 @@ export default function StockDetailScreen() {
       <RangeSelector value={rangeKey} onChange={setRangeKey} />
 
       {chartQuery.isLoading ? (
-        <ActivityIndicator color={colors.bullish} style={styles.loader} />
+        <ActivityIndicator color={colors.accent} style={styles.loader} />
       ) : chartQuery.data ? (
         <CandlestickChart
           candles={chartQuery.data.candles}
@@ -121,7 +158,7 @@ export default function StockDetailScreen() {
       )}
 
       {analysisQuery.isLoading ? (
-        <ActivityIndicator color={colors.bullish} style={styles.loader} />
+        <ActivityIndicator color={colors.accent} style={styles.loader} />
       ) : analysisQuery.data ? (
         <AnalysisPanel analysis={analysisQuery.data} />
       ) : (
@@ -130,7 +167,7 @@ export default function StockDetailScreen() {
 
       <Text style={styles.sectionTitle}>{t("stock.news")}</Text>
       {newsQuery.isLoading ? (
-        <ActivityIndicator color={colors.bullish} style={styles.loader} />
+        <ActivityIndicator color={colors.accent} style={styles.loader} />
       ) : (
         (newsQuery.data?.articles ?? []).map((article) => (
           <NewsListItem key={article.id} article={article} />
@@ -163,7 +200,28 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
   },
-  watchButtonText: { color: colors.bullish, fontSize: 12, fontWeight: "700" },
+  watchButtonText: { color: colors.accent, fontSize: 12, fontWeight: "700" },
+  flairChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+    backgroundColor: colors.accentMuted,
+    borderRadius: 10,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    marginBottom: spacing.md,
+  },
+  flairLabel: {
+    color: colors.accent,
+    fontSize: 11,
+    fontWeight: "800",
+    textTransform: "uppercase",
+  },
+  flairText: {
+    color: colors.textSecondary,
+    fontSize: 12,
+    flex: 1,
+  },
   rangesBlock: {
     backgroundColor: colors.surface,
     borderWidth: 1,

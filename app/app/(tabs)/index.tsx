@@ -13,21 +13,35 @@ import { colors, spacing } from "@/theme/colors";
 import { SegmentedToggle } from "@/components/common/SegmentedToggle";
 import { CategoryChips } from "@/components/common/CategoryChips";
 import { StockRow } from "@/components/common/StockRow";
-import { useMovers, useSymbols } from "@/api/hooks";
+import { useMovers, useQuotes, useSymbols } from "@/api/hooks";
 import type { Market } from "@/types/api";
 
 type MarketFilter = Market | "ALL";
-type MoverType = "active" | "gainers" | "losers";
+type MoverType = "market_cap" | "active" | "gainers" | "losers";
+
+function sortByMarketCapDesc<T extends { symbol: string; marketCap: number | null }>(
+  items: T[]
+): T[] {
+  return [...items].sort((a, b) => (b.marketCap ?? 0) - (a.marketCap ?? 0));
+}
 
 export default function HomeScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const [market, setMarket] = useState<MarketFilter>("ALL");
-  const [moverType, setMoverType] = useState<MoverType>("active");
+  const [moverType, setMoverType] = useState<MoverType>("market_cap");
   const [query, setQuery] = useState("");
 
   const symbolsQuery = useSymbols({ query: query || undefined, market, limit: 100 });
   const moversQuery = useMovers({ market, type: moverType });
+
+  const showingSearch = query.trim().length > 0;
+
+  const searchSymbols = useMemo(
+    () => (symbolsQuery.data ?? []).map((s) => s.symbol),
+    [symbolsQuery.data]
+  );
+  const searchQuotesQuery = useQuotes(showingSearch ? searchSymbols : []);
 
   const nameBySymbol = useMemo(() => {
     const map = new Map<string, string>();
@@ -35,7 +49,10 @@ export default function HomeScreen() {
     return map;
   }, [symbolsQuery.data]);
 
-  const showingSearch = query.trim().length > 0;
+  const sortedSearchResults = useMemo(
+    () => sortByMarketCapDesc(searchQuotesQuery.data ?? []),
+    [searchQuotesQuery.data]
+  );
 
   return (
     <View style={styles.container}>
@@ -66,6 +83,7 @@ export default function HomeScreen() {
               value={moverType}
               onChange={setMoverType}
               options={[
+                { value: "market_cap", label: t("home.topMarketCap") },
                 { value: "active", label: t("home.mostActive") },
                 { value: "gainers", label: t("home.gainers") },
                 { value: "losers", label: t("home.losers") },
@@ -76,28 +94,17 @@ export default function HomeScreen() {
       </View>
 
       {showingSearch ? (
-        symbolsQuery.isLoading ? (
-          <ActivityIndicator color={colors.bullish} style={styles.loader} />
+        symbolsQuery.isLoading || searchQuotesQuery.isLoading ? (
+          <ActivityIndicator color={colors.accent} style={styles.loader} />
         ) : (
           <FlatList
-            data={symbolsQuery.data ?? []}
+            data={sortedSearchResults}
             keyExtractor={(item) => item.symbol}
             contentContainerStyle={styles.list}
             renderItem={({ item }) => (
               <StockRow
-                quote={{
-                  symbol: item.symbol,
-                  price: null,
-                  change: null,
-                  changePercent: null,
-                  dayHigh: null,
-                  dayLow: null,
-                  prevClose: null,
-                  volume: null,
-                  fiftyTwoWeekLow: null,
-                  fiftyTwoWeekHigh: null,
-                }}
-                name={item.name}
+                quote={item}
+                name={nameBySymbol.get(item.symbol)}
                 onPress={() => router.push(`/stock/${encodeURIComponent(item.symbol)}`)}
               />
             )}
@@ -105,7 +112,7 @@ export default function HomeScreen() {
           />
         )
       ) : moversQuery.isLoading ? (
-        <ActivityIndicator color={colors.bullish} style={styles.loader} />
+        <ActivityIndicator color={colors.accent} style={styles.loader} />
       ) : (
         <FlatList
           data={moversQuery.data ?? []}

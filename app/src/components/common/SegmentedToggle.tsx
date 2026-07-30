@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
   },
   segmentActive: {
-    backgroundColor: colors.bullishMuted,
+    backgroundColor: colors.accentMuted,
   },
   label: {
     color: colors.textSecondary,
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   labelActive: {
-    color: colors.bullish,
+    color: colors.accent,
   },
 });

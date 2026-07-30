@@ -1,11 +1,18 @@
 export const colors = {
-  background: "#0B0F0D",
-  surface: "#12211A",
-  surfaceAlt: "#16281F",
-  border: "#1F3A2C",
-  textPrimary: "#EAF7EF",
-  textSecondary: "#8FB3A0",
-  textMuted: "#5C7A6B",
+  background: "#000000",
+  surface: "#0D1117",
+  surfaceAlt: "#161B22",
+  border: "#242B36",
+  textPrimary: "#E6EDF3",
+  textSecondary: "#8B98A5",
+  textMuted: "#57606A",
+  // Brand/interactive accent -- distinct from bullish/bearish so buttons,
+  // active states, and loading spinners don't all read as "price is up".
+  accent: "#2DD4BF",
+  accentMuted: "#0F3B36",
+  accentStrong: "#5EEAD4",
+  // Reserved strictly for price-direction semantics (candles, % change,
+  // buy/sell recommendation, sentiment).
   bullish: "#22D97B",
   bullishMuted: "#134B33",
   bullishStrong: "#3BFF97",
@@ -14,7 +21,6 @@ export const colors = {
   bearishStrong: "#FF2E2E",
   neutral: "#E8C547",
   neutralMuted: "#4A3E12",
-  accent: "#22D97B",
   white: "#FFFFFF",
   black: "#000000",
 } as const;

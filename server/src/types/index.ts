@@ -30,6 +30,7 @@ export interface Quote {
   marketState?: string;
   fiftyTwoWeekLow: number | null;
   fiftyTwoWeekHigh: number | null;
+  marketCap: number | null;
 }
 
 export type TrendDirection = "up" | "down" | "sideways";

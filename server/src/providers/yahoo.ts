@@ -98,6 +98,7 @@ export async function fetchQuotes(symbols: string[]): Promise<Quote[]> {
     marketState: r.marketState,
     fiftyTwoWeekLow: r.fiftyTwoWeekLow ?? null,
     fiftyTwoWeekHigh: r.fiftyTwoWeekHigh ?? null,
+    marketCap: r.marketCap ?? null,
   }));
 }
 

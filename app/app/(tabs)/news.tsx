@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import { ActivityIndicator, SectionList, StyleSheet, View } from "react-native";
 import { Text } from "@/components/common/AppText";
 import { useTranslation } from "react-i18next";
 import { colors, spacing } from "@/theme/colors";
@@ -7,6 +7,18 @@ import { NewsListItem } from "@/components/news/NewsListItem";
 import { CategoryChips } from "@/components/common/CategoryChips";
 import { useNews } from "@/api/hooks";
 import { useSettingsStore } from "@/store/settingsStore";
+import type { NewsArticle } from "@/types/api";
+
+const CATEGORY_ORDER = [
+  "earnings",
+  "mergers_acquisitions",
+  "dividend",
+  "interest_rates",
+  "regulation",
+  "oil_energy",
+  "leadership",
+  "legal",
+];
 
 export default function NewsScreen() {
   const { t } = useTranslation();
@@ -25,9 +37,23 @@ export default function NewsScreen() {
       { value: "all", label: t("news.allTopics") },
       ...Array.from(seen).map((value) => ({
         value,
-        label: value.replace(/_/g, " "),
+        label: t(`news.category.${value}`, value.replace(/_/g, " ")),
       })),
     ];
+  }, [articles, t]);
+
+  const sections = useMemo(() => {
+    const map = new Map<string, NewsArticle[]>();
+    for (const article of articles) {
+      const key = CATEGORY_ORDER.find((c) => article.topics.includes(c)) ?? "general";
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(article);
+    }
+    const orderedKeys = [...CATEGORY_ORDER.filter((c) => map.has(c)), ...(map.has("general") ? ["general"] : [])];
+    return orderedKeys.map((key) => ({
+      title: t(`news.category.${key}`, key.replace(/_/g, " ")),
+      data: map.get(key)!,
+    }));
   }, [articles, t]);
 
   const filtered = topic === "all" ? articles : articles.filter((a) => a.topics.includes(topic));
@@ -41,10 +67,22 @@ export default function NewsScreen() {
         </View>
       )}
       {newsQuery.isLoading ? (
-        <ActivityIndicator color={colors.bullish} style={styles.loader} />
+        <ActivityIndicator color={colors.accent} style={styles.loader} />
+      ) : topic === "all" ? (
+        <SectionList
+          sections={sections}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.list}
+          renderItem={({ item }) => <NewsListItem article={item} />}
+          renderSectionHeader={({ section }) => (
+            <Text style={styles.sectionHeader}>{section.title}</Text>
+          )}
+          ListEmptyComponent={<Text style={styles.empty}>{t("common.noData")}</Text>}
+          stickySectionHeadersEnabled={false}
+        />
       ) : (
-        <FlatList
-          data={filtered}
+        <SectionList
+          sections={[{ title: "", data: filtered }]}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
           renderItem={({ item }) => <NewsListItem article={item} />}
@@ -69,6 +107,15 @@ const styles = StyleSheet.create({
     paddingTop: spacing.md,
   },
   list: { padding: spacing.lg },
+  sectionHeader: {
+    color: colors.accent,
+    fontSize: 13,
+    fontWeight: "700",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+    marginBottom: spacing.sm,
+    marginTop: spacing.sm,
+  },
   loader: { marginTop: spacing.xl },
   empty: { color: colors.textMuted, textAlign: "center", marginTop: spacing.xl },
 });

@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   chipActive: {
-    backgroundColor: colors.bullishMuted,
-    borderColor: colors.bullish,
+    backgroundColor: colors.accentMuted,
+    borderColor: colors.accent,
   },
   dot: {
     width: 6,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: colors.bullish,
+    backgroundColor: colors.accent,
   },
   label: {
     color: colors.textSecondary,
@@ -77,6 +77,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   labelActive: {
-    color: colors.bullish,
+    color: colors.accent,
   },
 });

@@ -8,9 +8,9 @@ const SEED = symbolsSeed as { symbol: string; market: Market }[];
 
 export async function moversRoutes(app: FastifyInstance) {
   app.get("/api/v1/movers", async (request, reply) => {
-    const { market = "ALL", type = "active" } = request.query as {
+    const { market = "ALL", type = "market_cap" } = request.query as {
       market?: Market | "ALL";
-      type?: "gainers" | "losers" | "active";
+      type?: "gainers" | "losers" | "active" | "market_cap";
     };
 
     const symbols = SEED.filter((s) => market === "ALL" || s.market === market).map(
@@ -30,8 +30,10 @@ export async function moversRoutes(app: FastifyInstance) {
         sorted.sort((a, b) => (b.changePercent ?? -Infinity) - (a.changePercent ?? -Infinity));
       } else if (type === "losers") {
         sorted.sort((a, b) => (a.changePercent ?? Infinity) - (b.changePercent ?? Infinity));
-      } else {
+      } else if (type === "active") {
         sorted.sort((a, b) => (b.volume ?? 0) - (a.volume ?? 0));
+      } else {
+        sorted.sort((a, b) => (b.marketCap ?? 0) - (a.marketCap ?? 0));
       }
 
       return {
