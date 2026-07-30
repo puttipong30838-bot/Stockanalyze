@@ -32,6 +32,10 @@ export default function TabsLayout() {
         options={{ title: t("tabs.watchlist"), tabBarIcon: tabIcon("bookmark", "bookmark-outline") }}
       />
       <Tabs.Screen
+        name="community"
+        options={{ title: t("tabs.community"), tabBarIcon: tabIcon("people", "people-outline") }}
+      />
+      <Tabs.Screen
         name="news"
         options={{ title: t("tabs.news"), tabBarIcon: tabIcon("newspaper", "newspaper-outline") }}
       />

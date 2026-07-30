@@ -5,6 +5,9 @@ import type {
   AuthResponse,
   AuthUser,
   ChartResponse,
+  CommunityComment,
+  CommunityPost,
+  CommunityProfile,
   FxRate,
   NewsArticle,
   Quote,
@@ -95,5 +98,38 @@ export const api = {
     get: (token: string) => request<UserSettingsPayload>("/api/v1/user/settings", { token }),
     set: (token: string, settings: UserSettingsPayload) =>
       request<UserSettingsPayload>("/api/v1/user/settings", { method: "PUT", token, body: settings }),
+  },
+
+  community: {
+    posts: (params: { symbol?: string; userId?: number; before?: number } = {}, token?: string | null) => {
+      const qs = new URLSearchParams();
+      if (params.symbol) qs.set("symbol", params.symbol);
+      if (params.userId) qs.set("userId", String(params.userId));
+      if (params.before) qs.set("before", String(params.before));
+      return request<CommunityPost[]>(`/api/v1/community/posts?${qs.toString()}`, { token });
+    },
+    createPost: (token: string, body: string, symbol?: string) =>
+      request<CommunityPost>("/api/v1/community/posts", { method: "POST", token, body: { body, symbol } }),
+    like: (token: string, postId: number) =>
+      request<{ liked: boolean }>(`/api/v1/community/posts/${postId}/like`, { method: "POST", token }),
+    unlike: (token: string, postId: number) =>
+      request<{ liked: boolean }>(`/api/v1/community/posts/${postId}/like`, { method: "DELETE", token }),
+    comments: (postId: number) =>
+      request<CommunityComment[]>(`/api/v1/community/posts/${postId}/comments`),
+    createComment: (token: string, postId: number, body: string) =>
+      request<CommunityComment>(`/api/v1/community/posts/${postId}/comments`, {
+        method: "POST",
+        token,
+        body: { body },
+      }),
+    follow: (token: string, userId: number) =>
+      request<{ following: boolean }>(`/api/v1/community/users/${userId}/follow`, { method: "POST", token }),
+    unfollow: (token: string, userId: number) =>
+      request<{ following: boolean }>(`/api/v1/community/users/${userId}/follow`, {
+        method: "DELETE",
+        token,
+      }),
+    profile: (userId: number, token?: string | null) =>
+      request<CommunityProfile>(`/api/v1/community/users/${userId}/profile`, { token }),
   },
 };

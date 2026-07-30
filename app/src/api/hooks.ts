@@ -62,3 +62,30 @@ export function useFx() {
     refetchInterval: 5 * 60_000,
   });
 }
+
+export function useCommunityPosts(
+  params: { symbol?: string; userId?: number } = {},
+  token?: string | null
+) {
+  return useQuery({
+    queryKey: ["community-posts", params, token ?? null],
+    queryFn: () => api.community.posts(params, token),
+    refetchInterval: 30_000,
+  });
+}
+
+export function useCommunityComments(postId: number) {
+  return useQuery({
+    queryKey: ["community-comments", postId],
+    queryFn: () => api.community.comments(postId),
+    enabled: !!postId,
+  });
+}
+
+export function useCommunityProfile(userId: number, token?: string | null) {
+  return useQuery({
+    queryKey: ["community-profile", userId, token ?? null],
+    queryFn: () => api.community.profile(userId, token),
+    enabled: !!userId,
+  });
+}

@@ -2,6 +2,7 @@
   "tabs": {
     "home": "หน้าแรก",
     "watchlist": "รายการติดตาม",
+    "community": "คอมมูนิตี้",
     "news": "ข่าว",
     "settings": "ตั้งค่า"
   },
@@ -146,6 +147,25 @@
     "error": "เกิดข้อผิดพลาด",
     "retry": "ลองใหม่",
     "noData": "ไม่มีข้อมูล"
+  },
+  "community": {
+    "composerPlaceholder": "แชร์ไอเดีย มุมมองกราฟ หรือคำถาม...",
+    "symbolOptional": "สัญลักษณ์หุ้น (ไม่บังคับ)",
+    "post": "โพสต์",
+    "comments": "ความคิดเห็น",
+    "comment": "ความคิดเห็น",
+    "noPosts": "ยังไม่มีโพสต์ เป็นคนแรกที่แชร์เลย",
+    "noComments": "ยังไม่มีความคิดเห็น",
+    "loginToPost": "เข้าสู่ระบบเพื่อโพสต์",
+    "loginToInteract": "เข้าสู่ระบบเพื่อตอบกลับ",
+    "commentPlaceholder": "เขียนความคิดเห็น...",
+    "reply": "ตอบกลับ",
+    "profileTitle": "โปรไฟล์",
+    "posts": "โพสต์",
+    "followers": "ผู้ติดตาม",
+    "following": "กำลังติดตาม",
+    "follow": "ติดตาม",
+    "unfollow": "เลิกติดตาม"
   },
   "auth": {
     "title": "บัญชีผู้ใช้",

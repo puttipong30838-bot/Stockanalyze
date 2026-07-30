@@ -17,7 +17,8 @@ typography. Built with a free/keyless data stack — no paid API keys required.
   category chips, view candlestick charts (TradingView `lightweight-charts`) with a
   1D/5D/1M/6M/YTD/1Y/5Y range selector, day-range and 52-week-range bars, a full
   analysis panel, news with topic filters and TTS, watchlist, Investor/Trader mode
-  toggle, Thai/English UI.
+  toggle, Thai/English UI, free accounts, and a Community tab (posts, likes,
+  comments, follows, profiles).
 
 ## Running it
 
@@ -37,6 +38,11 @@ zero external service, still fully free. Set a `JWT_SECRET` env var in any
 real deployment; without one the server falls back to a fixed dev-only secret
 (see `server/src/auth.ts`), which is fine for local testing but not for
 production.
+
+The same account also unlocks the Community tab (posts, likes, comments,
+follows, profiles — `server/src/routes/community.ts`, same SQLite DB).
+Reading the feed works for guests; posting, liking, commenting, and following
+require logging in.
 
 ### 2. Mobile app
 

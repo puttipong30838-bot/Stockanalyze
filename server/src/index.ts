@@ -9,6 +9,7 @@ import { moversRoutes } from "./routes/movers.js";
 import { fxRoutes } from "./routes/fx.js";
 import { authRoutes } from "./routes/auth.js";
 import { userRoutes } from "./routes/user.js";
+import { communityRoutes } from "./routes/community.js";
 
 export function buildServer() {
   const app = Fastify({ logger: true });
@@ -26,6 +27,7 @@ export function buildServer() {
   app.register(fxRoutes);
   app.register(authRoutes);
   app.register(userRoutes);
+  app.register(communityRoutes);
 
   return app;
 }

@@ -120,6 +120,41 @@ export interface UserSettingsPayload {
   mode: string;
 }
 
+export interface CommunityAuthor {
+  id: number;
+  email: string;
+  displayName: string | null;
+}
+
+export interface CommunityPost {
+  id: number;
+  symbol: string | null;
+  body: string;
+  createdAt: string;
+  author: CommunityAuthor;
+  likeCount: number;
+  commentCount: number;
+  likedByMe: boolean;
+}
+
+export interface CommunityComment {
+  id: number;
+  postId: number;
+  body: string;
+  createdAt: string;
+  author: CommunityAuthor;
+}
+
+export interface CommunityProfile {
+  id: number;
+  email: string;
+  displayName: string | null;
+  postCount: number;
+  followerCount: number;
+  followingCount: number;
+  isFollowedByMe: boolean;
+}
+
 export interface ApiEnvelope<T> {
   data: T;
   meta?: Record<string, unknown>;

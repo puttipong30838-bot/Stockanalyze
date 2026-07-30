@@ -36,4 +36,32 @@ db.exec(`
     news_language TEXT NOT NULL DEFAULT 'th',
     mode TEXT NOT NULL DEFAULT 'investor'
   );
+
+  CREATE TABLE IF NOT EXISTS posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    symbol TEXT,
+    body TEXT NOT NULL,
+    created_at TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER NOT NULL REFERENCES posts(id),
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    body TEXT NOT NULL,
+    created_at TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS likes (
+    post_id INTEGER NOT NULL REFERENCES posts(id),
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    PRIMARY KEY (post_id, user_id)
+  );
+
+  CREATE TABLE IF NOT EXISTS follows (
+    follower_id INTEGER NOT NULL REFERENCES users(id),
+    followee_id INTEGER NOT NULL REFERENCES users(id),
+    PRIMARY KEY (follower_id, followee_id)
+  );
 `);

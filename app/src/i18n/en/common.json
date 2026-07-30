@@ -2,6 +2,7 @@
   "tabs": {
     "home": "Home",
     "watchlist": "Watchlist",
+    "community": "Community",
     "news": "News",
     "settings": "Settings"
   },
@@ -146,6 +147,25 @@
     "error": "Something went wrong",
     "retry": "Retry",
     "noData": "No data available"
+  },
+  "community": {
+    "composerPlaceholder": "Share an idea, a chart read, or a question...",
+    "symbolOptional": "Symbol (optional)",
+    "post": "Post",
+    "comments": "Comments",
+    "comment": "Comment",
+    "noPosts": "No posts yet — be the first to share something.",
+    "noComments": "No comments yet.",
+    "loginToPost": "Log in to post",
+    "loginToInteract": "Log in to reply",
+    "commentPlaceholder": "Write a reply...",
+    "reply": "Reply",
+    "profileTitle": "Profile",
+    "posts": "Posts",
+    "followers": "Followers",
+    "following": "Following",
+    "follow": "Follow",
+    "unfollow": "Unfollow"
   },
   "auth": {
     "title": "Account",
