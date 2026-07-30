@@ -57,8 +57,26 @@ EXPO_PUBLIC_API_BASE_URL=http://<your-computer-LAN-IP>:4000 npx expo start
 ```
 
 Scan the QR code with the Expo Go app on your phone. This is the fastest way to
-try the real app today, with no build step. To eventually get a real installable
-APK, run `npx eas build -p android` (requires a free Expo/EAS account).
+try the real app today, with no build step.
+
+### 3. Building a real, installable APK
+
+This repo ships `app/eas.json` with the build profiles already configured, but
+the actual build has to run under *your own* free Expo/EAS account — that's an
+interactive login this session can't do on your behalf. From `app/`:
+
+```
+npx eas-cli login              # one-time, creates a free account if you don't have one
+npx eas-cli build:configure    # one-time, links this project to your account
+npx eas-cli build -p android --profile preview
+```
+
+The `preview` profile is set to build a directly-installable `.apk` (rather
+than the Play-Store-only `.aab` format) — once the build finishes, EAS gives
+you a download link/QR code to install it straight onto an Android phone, no
+Play Store or cable needed. The `production` profile is left as the default
+app-bundle format for whenever you're ready for an actual Play Store listing
+(a separate, later step: store listing, signing key management, review).
 
 ## Important notes
 
