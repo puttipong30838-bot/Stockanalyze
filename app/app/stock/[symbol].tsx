@@ -4,6 +4,7 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
+  TextInput,
   View,
 } from "react-native";
 import { Text } from "@/components/common/AppText";
@@ -11,12 +12,17 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { colors, spacing } from "@/theme/colors";
 import { CandlestickChart } from "@/components/chart/CandlestickChart";
+import { toPercentChangeSeries, type CompareSeriesInput } from "@/components/chart/types";
 import { AnalysisPanel } from "@/components/analysis/AnalysisPanel";
 import { NewsListItem } from "@/components/news/NewsListItem";
 import { RangeBar } from "@/components/common/RangeBar";
 import { RangeSelector, RANGE_CONFIG, type RangeKey } from "@/components/common/RangeSelector";
 import { useAnalysis, useChart, useFx, useNews, useQuotes } from "@/api/hooks";
 import { useSettingsStore } from "@/store/settingsStore";
+import { api } from "@/api/client";
+import type { Candle } from "@/types/api";
+
+const COMPARE_COLORS = [colors.neutral, colors.accentStrong];
 
 function formatMoney(value: number, currency: string): string {
   const symbol = currency === "THB" ? "฿" : currency === "USD" ? "$" : `${currency} `;
@@ -40,6 +46,40 @@ export default function StockDetailScreen() {
 
   const quoteQuery = useQuotes([symbol], 10_000);
   const chartQuery = useChart(symbol, interval, range);
+
+  async function handleLoadMoreHistory(beforeUnixSeconds: number): Promise<Candle[]> {
+    const older = await api.chart(symbol, interval, range, beforeUnixSeconds - 1);
+    return older.candles;
+  }
+
+  const [compareSymbols, setCompareSymbols] = useState<string[]>([]);
+  const [compareInput, setCompareInput] = useState("");
+  const compareChart0 = useChart(compareSymbols[0] ?? "", interval, range);
+  const compareChart1 = useChart(compareSymbols[1] ?? "", interval, range);
+
+  const compareSeries = useMemo(() => {
+    const queries = [compareChart0, compareChart1];
+    const result: CompareSeriesInput[] = [];
+    compareSymbols.forEach((sym, idx) => {
+      const data = queries[idx]?.data;
+      if (!data) return;
+      result.push({ symbol: sym, color: COMPARE_COLORS[idx], points: toPercentChangeSeries(data.candles) });
+    });
+    return result;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [compareSymbols, compareChart0.data, compareChart1.data]);
+
+  function handleAddCompare() {
+    const sym = compareInput.trim().toUpperCase();
+    if (!sym || sym === symbol || compareSymbols.includes(sym) || compareSymbols.length >= 2) return;
+    setCompareSymbols((prev) => [...prev, sym]);
+    setCompareInput("");
+  }
+
+  function handleRemoveCompare(sym: string) {
+    setCompareSymbols((prev) => prev.filter((s) => s !== sym));
+  }
+
   const analysisQuery = useAnalysis(symbol, mode, 30_000);
   const newsQuery = useNews({ symbol, lang: newsLanguage, limit: 10 });
   const fxQuery = useFx();
@@ -145,6 +185,36 @@ export default function StockDetailScreen() {
 
       <RangeSelector value={rangeKey} onChange={setRangeKey} />
 
+      <View style={styles.compareRow}>
+        {compareSymbols.map((sym, idx) => (
+          <Pressable
+            key={sym}
+            onPress={() => handleRemoveCompare(sym)}
+            style={[styles.compareChip, { borderColor: COMPARE_COLORS[idx] }]}
+          >
+            <View style={[styles.compareDot, { backgroundColor: COMPARE_COLORS[idx] }]} />
+            <Text style={styles.compareChipText}>{sym}</Text>
+            <Text style={styles.compareChipRemove}>×</Text>
+          </Pressable>
+        ))}
+        {compareSymbols.length < 2 && (
+          <View style={styles.compareInputRow}>
+            <TextInput
+              value={compareInput}
+              onChangeText={setCompareInput}
+              placeholder={t("stock.compareAddPlaceholder")}
+              placeholderTextColor={colors.textMuted}
+              autoCapitalize="characters"
+              style={styles.compareInput}
+              onSubmitEditing={handleAddCompare}
+            />
+            <Pressable onPress={handleAddCompare} style={styles.compareAddButton}>
+              <Text style={styles.compareAddButtonText}>{t("stock.compareAdd")}</Text>
+            </Pressable>
+          </View>
+        )}
+      </View>
+
       {chartQuery.isLoading ? (
         <ActivityIndicator color={colors.accent} style={styles.loader} />
       ) : chartQuery.data ? (
@@ -152,6 +222,8 @@ export default function StockDetailScreen() {
           candles={chartQuery.data.candles}
           overlays={chartQuery.data.overlays}
           height={300}
+          onLoadMoreHistory={handleLoadMoreHistory}
+          compareSeries={compareSeries}
         />
       ) : (
         <Text style={styles.empty}>{t("common.noData")}</Text>
@@ -230,6 +302,45 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     marginBottom: spacing.md,
   },
+  compareRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: spacing.xs,
+    marginBottom: spacing.sm,
+  },
+  compareChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+    backgroundColor: colors.surface,
+  },
+  compareDot: { width: 6, height: 6, borderRadius: 3 },
+  compareChipText: { color: colors.textPrimary, fontSize: 11, fontWeight: "700" },
+  compareChipRemove: { color: colors.textMuted, fontSize: 12 },
+  compareInputRow: { flexDirection: "row", alignItems: "center", gap: spacing.xs },
+  compareInput: {
+    backgroundColor: colors.surface,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.border,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+    color: colors.textPrimary,
+    fontSize: 12,
+    minWidth: 90,
+  },
+  compareAddButton: {
+    borderRadius: 999,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+    backgroundColor: colors.accentMuted,
+  },
+  compareAddButtonText: { color: colors.accent, fontSize: 11, fontWeight: "700" },
   sectionTitle: {
     color: colors.textPrimary,
     fontSize: 16,

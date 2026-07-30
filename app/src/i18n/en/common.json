@@ -46,6 +46,13 @@
     "removeFromWatchlist": "Remove from Watchlist",
     "dayRange": "Day Range",
     "fiftyTwoWeekRange": "52-Week Range",
+    "compareAddPlaceholder": "Compare vs symbol",
+    "compareAdd": "Add",
+    "drawTrendline": "Trendline",
+    "drawHLine": "H-Line",
+    "clearDrawings": "Clear",
+    "share": "Share",
+    "shareUnavailable": "Sharing isn't available on this device.",
     "flair": {
       "investor": {
         "accumulate": "Near its 52-week low — a zone some long-term investors watch for accumulation.",

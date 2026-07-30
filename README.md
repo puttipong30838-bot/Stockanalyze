@@ -14,9 +14,11 @@ typography. Built with a free/keyless data stack — no paid API keys required.
   proxy, consolidation zones, pattern detection, sentiment, AI plan/hold/summary
   including Strong Buy/Strong Sell tiers), plus a live USD/THB FX rate.
 - `app/` — Expo (React Native) app. Browse stocks/crypto/commodities/funds via
-  category chips, view candlestick charts (TradingView `lightweight-charts`) with a
-  1D/5D/1M/6M/YTD/1Y/5Y range selector, day-range and 52-week-range bars, a full
-  analysis panel, news with topic filters and TTS, watchlist, Investor/Trader mode
+  category chips, view candlestick charts (TradingView `lightweight-charts`) with
+  continuous pan-to-load-more history, a 1D/5D/1M/6M/YTD/1Y/5Y quick-jump range
+  selector, up to 2 compare-symbol overlays, trendline/horizontal-line drawing
+  tools, and chart sharing; day-range and 52-week-range bars, a full analysis
+  panel, news with topic filters and TTS, watchlist, Investor/Trader mode
   toggle, Thai/English UI, free accounts, and a Community tab (posts, likes,
   comments, follows, profiles).
 
@@ -85,3 +87,12 @@ APK, run `npx eas build -p android` (requires a free Expo/EAS account).
   official Thai Gold Traders Association baht-weight price (no free source
   exists for that). "Mutual Fund" covers US funds only (Yahoo has no free
   Thai กองทุนรวม NAV data).
+- **Chart history paging**: panning near the earliest loaded bar fetches an
+  older page ending right before it (`GET /api/v1/charts/:symbol?...&end=<unix
+  seconds>`) and merges it in without resetting zoom; the quick-jump range
+  selector still works as a shortcut, it's just no longer the only way to see
+  further back.
+- **Drawing tools are intentionally scoped down**, not full TradingView parity:
+  a trendline (tap two points) and a horizontal line (tap once), kept in the
+  chart component's local state only — not persisted or synced across
+  devices/sessions.

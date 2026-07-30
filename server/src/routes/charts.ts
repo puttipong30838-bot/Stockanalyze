@@ -13,9 +13,10 @@ const VALID_RANGES: ChartRange[] = ["1d", "5d", "1mo", "6mo", "ytd", "1y", "5y"]
 export async function chartsRoutes(app: FastifyInstance) {
   app.get("/api/v1/charts/:symbol", async (request, reply) => {
     const { symbol } = request.params as { symbol: string };
-    const { interval = "1d", range = "6mo" } = request.query as {
+    const { interval = "1d", range = "6mo", end } = request.query as {
       interval?: string;
       range?: string;
+      end?: string;
     };
 
     if (!VALID_INTERVALS.includes(interval as ChartInterval)) {
@@ -26,13 +27,18 @@ export async function chartsRoutes(app: FastifyInstance) {
       reply.code(400);
       return { error: `invalid range, expected one of ${VALID_RANGES.join(", ")}` };
     }
+    const endDate = end ? new Date(Number(end) * 1000) : undefined;
+    if (end && (!endDate || Number.isNaN(endDate.getTime()))) {
+      reply.code(400);
+      return { error: "invalid end, expected a unix timestamp in seconds" };
+    }
 
     try {
       const candles = await cached(
         "charts",
-        `${symbol}:${interval}:${range}`,
+        `${symbol}:${interval}:${range}:${end ?? ""}`,
         30_000,
-        () => fetchChart(symbol, interval as ChartInterval, range as ChartRange)
+        () => fetchChart(symbol, interval as ChartInterval, range as ChartRange, endDate)
       );
 
       const c = closes(candles);

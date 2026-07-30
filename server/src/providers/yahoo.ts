@@ -15,9 +15,10 @@ const INTERVAL_MAP: Record<ChartInterval, string> = {
   "1wk": "1wk",
 };
 
-export function rangeToDates(range: ChartRange): { period1: Date; period2: Date } {
-  const period2 = new Date();
-  const period1 = new Date(period2);
+/** Steps an anchor date backward by one range-span, used both for "now minus
+ * range" (default) and for paging further back from an arbitrary anchor. */
+function subtractRangeSpan(anchor: Date, range: ChartRange): Date {
+  const period1 = new Date(anchor);
   switch (range) {
     case "1d":
       period1.setDate(period1.getDate() - 1);
@@ -42,15 +43,22 @@ export function rangeToDates(range: ChartRange): { period1: Date; period2: Date 
       period1.setFullYear(period1.getFullYear() - 5);
       break;
   }
+  return period1;
+}
+
+export function rangeToDates(range: ChartRange, end?: Date): { period1: Date; period2: Date } {
+  const period2 = end ?? new Date();
+  const period1 = subtractRangeSpan(period2, range);
   return { period1, period2 };
 }
 
 export async function fetchChart(
   symbol: string,
   interval: ChartInterval,
-  range: ChartRange
+  range: ChartRange,
+  end?: Date
 ): Promise<Candle[]> {
-  const { period1, period2 } = rangeToDates(range);
+  const { period1, period2 } = rangeToDates(range, end);
   const result = await yahooFinance.chart(symbol, {
     period1,
     period2,

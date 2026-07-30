@@ -46,6 +46,13 @@
     "removeFromWatchlist": "นำออกจากรายการติดตาม",
     "dayRange": "ช่วงราคาวันนี้",
     "fiftyTwoWeekRange": "ช่วงราคา 52 สัปดาห์",
+    "compareAddPlaceholder": "เทียบกับสัญลักษณ์หุ้น",
+    "compareAdd": "เพิ่ม",
+    "drawTrendline": "เส้นแนวโน้ม",
+    "drawHLine": "เส้นแนวนอน",
+    "clearDrawings": "ล้าง",
+    "share": "แชร์",
+    "shareUnavailable": "อุปกรณ์นี้ไม่รองรับการแชร์",
     "flair": {
       "investor": {
         "accumulate": "ราคาใกล้จุดต่ำสุดในรอบ 52 สัปดาห์ เป็นโซนที่นักลงทุนระยะยาวบางส่วนจับตาเพื่อสะสมหุ้น",

@@ -21,4 +21,11 @@ describe("rangeToDates", () => {
     const diffDays = (period2.getTime() - period1.getTime()) / 86_400_000;
     expect(diffDays).toBeCloseTo(5, 1);
   });
+
+  it("pages further back from an explicit end anchor instead of now", () => {
+    const end = new Date("2024-06-15T00:00:00Z");
+    const { period1, period2 } = rangeToDates("1mo", end);
+    expect(period2.getTime()).toBe(end.getTime());
+    expect(period2.getMonth() - period1.getMonth() === 1 || period1.getMonth() === 11).toBe(true);
+  });
 });

@@ -119,6 +119,28 @@ describe("GET /api/v1/charts/:symbol", () => {
     expect(body.data.overlays).toHaveProperty("sma20");
     await app.close();
   });
+
+  it("accepts an end param to page further back in history", async () => {
+    const app = buildServer();
+    const end = Math.floor(Date.now() / 1000) - 30 * 86_400;
+    const res = await app.inject({
+      method: "GET",
+      url: `/api/v1/charts/AAPL?interval=1d&range=6mo&end=${end}`,
+    });
+    expect(res.statusCode).toBe(200);
+    expect(res.json().data.candles.length).toBeGreaterThan(0);
+    await app.close();
+  });
+
+  it("rejects a non-numeric end param", async () => {
+    const app = buildServer();
+    const res = await app.inject({
+      method: "GET",
+      url: "/api/v1/charts/AAPL?interval=1d&range=6mo&end=notanumber",
+    });
+    expect(res.statusCode).toBe(400);
+    await app.close();
+  });
 });
 
 describe("GET /api/v1/analysis/:symbol", () => {

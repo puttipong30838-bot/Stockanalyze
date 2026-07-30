@@ -52,9 +52,11 @@ export const api = {
   quotes: (symbols: string[]) =>
     getJson<Quote[]>(`/api/v1/quotes?symbols=${encodeURIComponent(symbols.join(","))}`),
 
-  chart: (symbol: string, interval: string, range: string) =>
+  chart: (symbol: string, interval: string, range: string, end?: number) =>
     getJson<ChartResponse>(
-      `/api/v1/charts/${encodeURIComponent(symbol)}?interval=${interval}&range=${range}`
+      `/api/v1/charts/${encodeURIComponent(symbol)}?interval=${interval}&range=${range}${
+        end ? `&end=${end}` : ""
+      }`
     ),
 
   analysis: (symbol: string, mode: TradingMode) =>
