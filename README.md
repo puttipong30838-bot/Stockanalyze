@@ -77,11 +77,17 @@ APK, run `npx eas build -p android` (requires a free Expo/EAS account).
   universe (~8,000+ tickers) is searchable by name/ticker, cached 24h
   (`server/src/providers/nasdaq.ts`). Falls back to the curated list alone if
   that fetch ever fails.
-- **Thai (SET) stocks**: no equivalent free bulk directory exists, so this
-  stays a curated list (`server/src/data/symbols.seed.json`, ~157 SET names
-  covering SET50/SET100-class large and mid caps) rather than the full ~800
-  SET-listed universe. Browsing/movers for all markets is seed-list based;
-  only US free-text search is widened to the full directory.
+- **Thai (SET) stocks**: search is widened the same way as US, via
+  `server/src/providers/set.ts` attempting to fetch SET's own public
+  listed-company data, cached 24h, falling back to the curated seed list
+  (`server/src/data/symbols.seed.json`, ~157 SET names) on any failure. Unlike
+  NASDAQ Trader's decades-stable plain-text directory, there's no equivalent
+  long-standing free bulk file for the full SET universe, and this endpoint's
+  URL/response shape was never verified against the live site (this sandbox's
+  network policy blocks set.or.th) — **treat this one as unverified and likely
+  needing a follow-up fix** once actually run with real internet access; the
+  fix is isolated to that single file. Browsing/movers for all markets stays
+  seed-list based; only free-text search widens to the fetched directories.
 - "Gold" is the international spot price (USD/oz, via Yahoo `GC=F`) with a
   THB-per-oz line converted at the live FX rate — this is an estimate, not the
   official Thai Gold Traders Association baht-weight price (no free source

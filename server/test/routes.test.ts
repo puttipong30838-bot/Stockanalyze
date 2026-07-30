@@ -32,6 +32,12 @@ vi.mock("../src/providers/nasdaq.js", () => ({
   ]),
 }));
 
+vi.mock("../src/providers/set.js", () => ({
+  fetchSetSymbols: vi.fn(async () => [
+    { symbol: "ZZZZ.BK", name: "Zzzz Thailand PCL", market: "SET" as const },
+  ]),
+}));
+
 vi.mock("../src/providers/news.js", () => ({
   fetchNews: vi.fn(async (_query: string, lang: "th" | "en") => [
     {
@@ -79,6 +85,22 @@ describe("GET /api/v1/symbols", () => {
     const res = await app.inject({ method: "GET", url: "/api/v1/symbols?query=apple" });
     const body = res.json();
     expect(body.data.some((s: { symbol: string }) => s.symbol === "AAPL")).toBe(true);
+    await app.close();
+  });
+
+  it("widens US search results against the full NASDAQ directory", async () => {
+    const app = buildServer();
+    const res = await app.inject({ method: "GET", url: "/api/v1/symbols?query=zzzz&market=US" });
+    const body = res.json();
+    expect(body.data.some((s: { symbol: string }) => s.symbol === "ZZZZ")).toBe(true);
+    await app.close();
+  });
+
+  it("widens SET search results against the full SET stock list", async () => {
+    const app = buildServer();
+    const res = await app.inject({ method: "GET", url: "/api/v1/symbols?query=zzzz&market=SET" });
+    const body = res.json();
+    expect(body.data.some((s: { symbol: string }) => s.symbol === "ZZZZ.BK")).toBe(true);
     await app.close();
   });
 });
