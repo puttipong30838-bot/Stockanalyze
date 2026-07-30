@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Alert, Platform, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { Text } from "@/components/common/AppText";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import Constants from "expo-constants";
 import { useQueryClient } from "@tanstack/react-query";
 import { colors, spacing } from "@/theme/colors";
 import { SegmentedToggle } from "@/components/common/SegmentedToggle";
 import { useSettingsStore } from "@/store/settingsStore";
+import { useAuthStore } from "@/store/authStore";
 import { listVoicesForLanguage, type VoiceOption } from "@/tts/speak";
 
 function VoicePicker({ lang }: { lang: "th" | "en" }) {
@@ -60,7 +62,10 @@ function VoicePicker({ lang }: { lang: "th" | "en" }) {
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
+  const router = useRouter();
   const queryClient = useQueryClient();
+  const user = useAuthStore((s) => s.user);
+  const logout = useAuthStore((s) => s.logout);
   const language = useSettingsStore((s) => s.language);
   const setLanguage = useSettingsStore((s) => s.setLanguage);
   const newsLanguage = useSettingsStore((s) => s.newsLanguage);
@@ -80,6 +85,23 @@ export default function SettingsScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.title}>{t("settings.title")}</Text>
+
+      <View style={styles.section}>
+        <Text style={styles.label}>{t("settings.account")}</Text>
+        {user ? (
+          <View style={styles.accountRow}>
+            <Text style={styles.aboutText}>{user.displayName || user.email}</Text>
+            <Pressable onPress={logout} style={styles.actionButton}>
+              <Text style={styles.actionButtonText}>{t("settings.logOut")}</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <Pressable onPress={() => router.push("/auth")} style={styles.loginButton}>
+            <Text style={styles.loginButtonText}>{t("settings.logInOrSignUp")}</Text>
+          </Pressable>
+        )}
+        <Text style={styles.footnote}>{t("settings.accountNote")}</Text>
+      </View>
 
       <View style={styles.section}>
         <Text style={styles.label}>{t("settings.tradingMode")}</Text>
@@ -190,6 +212,19 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
   },
   actionButtonText: { color: colors.bearish, fontSize: 13, fontWeight: "700" },
+  accountRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  loginButton: {
+    alignSelf: "flex-start",
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    borderRadius: 999,
+    backgroundColor: colors.accent,
+  },
+  loginButtonText: { color: colors.black, fontSize: 13, fontWeight: "800" },
   aboutText: { color: colors.textPrimary, fontSize: 13, fontWeight: "600" },
   footnote: { color: colors.textMuted, fontSize: 11, fontStyle: "italic" },
 });

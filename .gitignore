@@ -7,3 +7,4 @@ dist/
 .env
 .env.local
 web-build/
+server/data/

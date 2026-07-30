@@ -126,6 +126,10 @@
     "tradingMode": "Trading Style",
     "thai": "Thai",
     "english": "English",
+    "account": "Account",
+    "logInOrSignUp": "Log In / Sign Up",
+    "logOut": "Log Out",
+    "accountNote": "Free account — just syncs your watchlist and settings across devices, no subscriptions.",
     "displayCurrency": "Preferred Display Currency",
     "ttsVoiceThai": "Thai Reading Voice",
     "ttsVoiceEnglish": "English Reading Voice",
@@ -142,5 +146,17 @@
     "error": "Something went wrong",
     "retry": "Retry",
     "noData": "No data available"
+  },
+  "auth": {
+    "title": "Account",
+    "freeAccountNote": "Free account — sync your watchlist and settings across devices. No payment, ever.",
+    "login": "Log In",
+    "register": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 8 characters",
+    "displayName": "Display Name (optional)",
+    "displayNamePlaceholder": "How should we call you?",
+    "genericError": "Something went wrong. Please try again."
   }
 }

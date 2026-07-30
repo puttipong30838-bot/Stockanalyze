@@ -10,6 +10,7 @@ import i18n from "@/i18n";
 import { colors } from "@/theme/colors";
 import { fontsToLoad } from "@/theme/fonts";
 import { useSettingsStore } from "@/store/settingsStore";
+import { useAuthStore } from "@/store/authStore";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,11 +31,13 @@ function LanguageSync() {
 
 export default function RootLayout() {
   const hydrate = useSettingsStore((s) => s.hydrate);
+  const hydrateAuth = useAuthStore((s) => s.hydrate);
   const [fontsLoaded] = useFonts(fontsToLoad);
 
   useEffect(() => {
     void hydrate();
-  }, [hydrate]);
+    void hydrateAuth();
+  }, [hydrate, hydrateAuth]);
 
   if (!fontsLoaded) {
     return <View style={{ flex: 1, backgroundColor: colors.background }} />;
@@ -55,6 +58,7 @@ export default function RootLayout() {
           >
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="stock/[symbol]" options={{ title: "" }} />
+            <Stack.Screen name="auth" options={{ presentation: "modal" }} />
           </Stack>
         </SafeAreaProvider>
       </I18nextProvider>

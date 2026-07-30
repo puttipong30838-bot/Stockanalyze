@@ -2,8 +2,9 @@
 
 Mobile stock analysis app (SET, US, crypto, commodities, US mutual funds) with
 charts, heuristic technical/news analysis, and bilingual (Thai/English) text-to-speech
-news reading. Green-on-black theme, Inter/Noto Sans Thai typography. Built with a
-free/keyless data stack — no paid API keys required.
+news reading. True-black theme with a mint/blue brand accent kept separate from
+bullish/bearish price colors (TradingView-inspired), Inter/Noto Sans Thai
+typography. Built with a free/keyless data stack — no paid API keys required.
 
 ## Structure
 
@@ -28,6 +29,14 @@ npm install
 npm run dev        # starts on http://localhost:4000
 npm test           # runs the offline unit/route test suite
 ```
+
+Accounts are optional and free (email/password, just to sync watchlist and
+settings across devices — no payment tiers). They're backed by a local SQLite
+file at `server/data/app.db` (auto-created, gitignored) via `better-sqlite3` —
+zero external service, still fully free. Set a `JWT_SECRET` env var in any
+real deployment; without one the server falls back to a fixed dev-only secret
+(see `server/src/auth.ts`), which is fine for local testing but not for
+production.
 
 ### 2. Mobile app
 

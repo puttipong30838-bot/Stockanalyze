@@ -103,6 +103,23 @@ export interface FxRate {
   usdThb: number | null;
 }
 
+export interface AuthUser {
+  id: number;
+  email: string;
+  displayName: string | null;
+}
+
+export interface AuthResponse {
+  token: string;
+  user: AuthUser;
+}
+
+export interface UserSettingsPayload {
+  language: string;
+  newsLanguage: string;
+  mode: string;
+}
+
 export interface ApiEnvelope<T> {
   data: T;
   meta?: Record<string, unknown>;

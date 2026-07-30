@@ -7,6 +7,8 @@ import { analysisRoutes } from "./routes/analysis.js";
 import { newsRoutes } from "./routes/news.js";
 import { moversRoutes } from "./routes/movers.js";
 import { fxRoutes } from "./routes/fx.js";
+import { authRoutes } from "./routes/auth.js";
+import { userRoutes } from "./routes/user.js";
 
 export function buildServer() {
   const app = Fastify({ logger: true });
@@ -22,6 +24,8 @@ export function buildServer() {
   app.register(newsRoutes);
   app.register(moversRoutes);
   app.register(fxRoutes);
+  app.register(authRoutes);
+  app.register(userRoutes);
 
   return app;
 }

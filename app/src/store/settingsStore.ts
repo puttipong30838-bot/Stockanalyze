@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { api } from "@/api/client";
+import { useAuthStore } from "@/store/authStore";
 
 export type UiLanguage = "th" | "en";
 export type TradingMode = "investor" | "trader";
@@ -21,6 +23,12 @@ interface SettingsState {
   setDisplayCurrency: (currency: DisplayCurrency) => void;
   setTtsVoice: (lang: UiLanguage, voiceId: string | null) => void;
   hydrate: () => Promise<void>;
+  hydrateFromServer: (data: {
+    watchlist: string[];
+    language: UiLanguage;
+    newsLanguage: UiLanguage;
+    mode: TradingMode;
+  }) => void;
 }
 
 const STORAGE_KEY = "stockpulse:settings:v1";
@@ -40,6 +48,22 @@ async function persist(partial: {
   }
 }
 
+/** Fire-and-forget sync to the server when the user is logged in; guest mode
+ * (no token) keeps working exactly as before, local-only. */
+function syncSettingsToServer(state: { language: UiLanguage; newsLanguage: UiLanguage; mode: TradingMode }) {
+  const token = useAuthStore.getState().token;
+  if (!token) return;
+  void api.userSettings
+    .set(token, { language: state.language, newsLanguage: state.newsLanguage, mode: state.mode })
+    .catch(() => {});
+}
+
+function syncWatchlistToServer(watchlist: string[]) {
+  const token = useAuthStore.getState().token;
+  if (!token) return;
+  void api.userWatchlist.set(token, watchlist).catch(() => {});
+}
+
 export const useSettingsStore = create<SettingsState>((set, get) => ({
   language: "th",
   newsLanguage: "th",
@@ -52,14 +76,17 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
   setLanguage: (language) => {
     set({ language });
     void persist({ ...get(), language });
+    syncSettingsToServer({ ...get(), language });
   },
   setNewsLanguage: (newsLanguage) => {
     set({ newsLanguage });
     void persist({ ...get(), newsLanguage });
+    syncSettingsToServer({ ...get(), newsLanguage });
   },
   setMode: (mode) => {
     set({ mode });
     void persist({ ...get(), mode });
+    syncSettingsToServer({ ...get(), mode });
   },
   toggleWatchlist: (symbol) => {
     const current = get().watchlist;
@@ -68,6 +95,7 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
       : [...current, symbol];
     set({ watchlist });
     void persist({ ...get(), watchlist });
+    syncWatchlistToServer(watchlist);
   },
   setDisplayCurrency: (displayCurrency) => {
     set({ displayCurrency });
@@ -95,5 +123,9 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
     } finally {
       set({ hydrated: true });
     }
+  },
+  hydrateFromServer: (data) => {
+    set(data);
+    void persist({ ...get(), ...data });
   },
 }));

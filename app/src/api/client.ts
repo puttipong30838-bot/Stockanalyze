@@ -2,21 +2,39 @@ import { API_BASE_URL } from "./config";
 import type {
   AnalysisBundle,
   ApiEnvelope,
+  AuthResponse,
+  AuthUser,
   ChartResponse,
   FxRate,
   NewsArticle,
   Quote,
   SymbolInfo,
   TradingMode,
+  UserSettingsPayload,
 } from "@/types/api";
 
-async function getJson<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_BASE_URL}${path}`);
+async function request<T>(
+  path: string,
+  options: { method?: string; body?: unknown; token?: string | null } = {}
+): Promise<T> {
+  const headers: Record<string, string> = {};
+  if (options.body !== undefined) headers["Content-Type"] = "application/json";
+  if (options.token) headers.Authorization = `Bearer ${options.token}`;
+
+  const res = await fetch(`${API_BASE_URL}${path}`, {
+    method: options.method ?? "GET",
+    headers,
+    body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+  });
   const body = (await res.json()) as ApiEnvelope<T>;
   if (!res.ok) {
     throw new Error(body.error ?? `Request failed: ${res.status}`);
   }
   return body.data;
+}
+
+function getJson<T>(path: string): Promise<T> {
+  return request<T>(path);
 }
 
 export const api = {
@@ -55,4 +73,27 @@ export const api = {
   },
 
   fx: () => getJson<FxRate>("/api/v1/fx"),
+
+  auth: {
+    register: (email: string, password: string, displayName?: string) =>
+      request<AuthResponse>("/api/v1/auth/register", {
+        method: "POST",
+        body: { email, password, displayName },
+      }),
+    login: (email: string, password: string) =>
+      request<AuthResponse>("/api/v1/auth/login", { method: "POST", body: { email, password } }),
+    me: (token: string) => request<AuthUser>("/api/v1/auth/me", { token }),
+  },
+
+  userWatchlist: {
+    get: (token: string) => request<string[]>("/api/v1/user/watchlist", { token }),
+    set: (token: string, symbols: string[]) =>
+      request<string[]>("/api/v1/user/watchlist", { method: "PUT", token, body: { symbols } }),
+  },
+
+  userSettings: {
+    get: (token: string) => request<UserSettingsPayload>("/api/v1/user/settings", { token }),
+    set: (token: string, settings: UserSettingsPayload) =>
+      request<UserSettingsPayload>("/api/v1/user/settings", { method: "PUT", token, body: settings }),
+  },
 };
