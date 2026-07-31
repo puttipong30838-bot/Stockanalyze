@@ -185,5 +185,11 @@
     "displayName": "Display Name (optional)",
     "displayNamePlaceholder": "How should we call you?",
     "genericError": "Something went wrong. Please try again."
+  },
+  "monetization": {
+    "sponsoredLabel": "Sponsored",
+    "openAccountTitle": "Open a trading account with {{broker}}",
+    "openAccountSubtitle": "Start investing with a licensed broker. StockPulse may earn a referral commission at no extra cost to you.",
+    "openAccountCta": "Learn more →"
   }
 }

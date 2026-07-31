@@ -185,5 +185,11 @@
     "displayName": "ชื่อที่แสดง (ไม่บังคับ)",
     "displayNamePlaceholder": "อยากให้เราเรียกคุณว่าอะไร?",
     "genericError": "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"
+  },
+  "monetization": {
+    "sponsoredLabel": "โฆษณา",
+    "openAccountTitle": "เปิดพอร์ตเทรดกับ {{broker}}",
+    "openAccountSubtitle": "เริ่มลงทุนกับโบรกเกอร์ที่ได้รับใบอนุญาต StockPulse อาจได้รับค่าคอมมิชชั่นแนะนำ โดยไม่มีค่าใช้จ่ายเพิ่มเติมสำหรับคุณ",
+    "openAccountCta": "ดูรายละเอียด →"
   }
 }

@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { colors, spacing } from "@/theme/colors";
 import { PostCard } from "@/components/community/PostCard";
+import { SponsoredBrokerCard } from "@/components/common/SponsoredCard";
 import { useCommunityPosts } from "@/api/hooks";
 import { api } from "@/api/client";
 import { useAuthStore } from "@/store/authStore";
@@ -90,6 +91,7 @@ export default function CommunityScreen() {
           data={postsQuery.data ?? []}
           keyExtractor={(item) => String(item.id)}
           contentContainerStyle={styles.list}
+          ListHeaderComponent={<SponsoredBrokerCard />}
           renderItem={({ item }) => (
             <PostCard
               post={item}

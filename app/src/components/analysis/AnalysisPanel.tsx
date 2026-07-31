@@ -5,6 +5,7 @@ import { colors, flagColor, spacing } from "@/theme/colors";
 import type { AnalysisBundle } from "@/types/api";
 import { InsightCard } from "./InsightCard";
 import { Badge } from "./Badge";
+import { SponsoredBrokerCard } from "@/components/common/SponsoredCard";
 
 function trendColor(direction: AnalysisBundle["trend"]["direction"]) {
   if (direction === "up") return colors.bullish;
@@ -32,6 +33,8 @@ export function AnalysisPanel({ analysis }: { analysis: AnalysisBundle }) {
         />
         <Text style={styles.body}>{analysis.holdRecommendation.rationale}</Text>
       </InsightCard>
+
+      <SponsoredBrokerCard />
 
       <InsightCard title={t("stock.aiPlan")}>
         <Text style={styles.body}>{analysis.aiPlan.text}</Text>

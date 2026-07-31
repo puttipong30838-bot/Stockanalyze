@@ -78,6 +78,30 @@ Play Store or cable needed. The `production` profile is left as the default
 app-bundle format for whenever you're ready for an actual Play Store listing
 (a separate, later step: store listing, signing key management, review).
 
+### 4. Monetization (affiliate broker referrals)
+
+`app/src/config/monetization.ts` holds a single affiliate config
+(`brokerName`, `referralUrl`), both empty by default — a "Sponsored" card
+(`src/components/common/SponsoredCard.tsx`) that links out to it is already
+wired into the stock detail screen's Hold Recommendation, the News tab, and
+the Community tab, but stays invisible everywhere until you fill it in.
+
+To turn it on:
+1. Sign up for a Thai broker's affiliate/referral program (most major brokers
+   have one) and get your referral link.
+2. Paste your broker name and link into `AFFILIATE_BROKER` in
+   `app/src/config/monetization.ts`.
+3. Rebuild/reload the app — the sponsored cards appear automatically, no other
+   code changes needed.
+
+This was chosen over ad networks (e.g. Google AdMob) as the starting point
+because it needs no new native dependencies or account-approval wait, and
+keeps working in Expo Go exactly as today. AdMob is a real option later, but
+it requires native SDK code that Expo Go can't run — you'd need to switch to
+a custom development build (`expo-dev-client` + `eas build --profile
+development`) instead of plain `npx expo start`, which is a bigger workflow
+change worth doing deliberately once there's real traffic to justify it.
+
 ## Important notes
 
 - **All "AI" analysis (Insight, Trend, Volatility, Institutional Demand/Whale

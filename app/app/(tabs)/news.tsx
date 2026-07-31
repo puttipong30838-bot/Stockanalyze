@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { colors, spacing } from "@/theme/colors";
 import { NewsListItem } from "@/components/news/NewsListItem";
 import { CategoryChips } from "@/components/common/CategoryChips";
+import { SponsoredBrokerCard } from "@/components/common/SponsoredCard";
 import { useNews } from "@/api/hooks";
 import { useSettingsStore } from "@/store/settingsStore";
 import type { NewsArticle } from "@/types/api";
@@ -73,6 +74,7 @@ export default function NewsScreen() {
           sections={sections}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
+          ListHeaderComponent={<SponsoredBrokerCard />}
           renderItem={({ item }) => <NewsListItem article={item} />}
           renderSectionHeader={({ section }) => (
             <Text style={styles.sectionHeader}>{section.title}</Text>
@@ -85,6 +87,7 @@ export default function NewsScreen() {
           sections={[{ title: "", data: filtered }]}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
+          ListHeaderComponent={<SponsoredBrokerCard />}
           renderItem={({ item }) => <NewsListItem article={item} />}
           ListEmptyComponent={<Text style={styles.empty}>{t("common.noData")}</Text>}
         />
